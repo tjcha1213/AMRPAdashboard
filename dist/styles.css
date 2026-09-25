@@ -194,124 +194,123 @@ output {
   font-weight: 800;
 }
 
-.systems-diagram {
-  display: grid;
-  grid-template-columns: 1fr 0.9fr 36px minmax(240px, 1.35fr) 36px 0.9fr 0.9fr;
-  gap: 12px;
-  align-items: center;
-}
-
-.factor-bank,
-.flow-stage,
-.hospital-stock {
-  display: grid;
-  gap: 10px;
+.vensim-wrap {
+  overflow-x: auto;
+  padding: 8px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fbfcfc;
-  padding: 16px;
 }
 
-.factor-bank {
-  align-self: stretch;
-  border-left: 4px solid var(--blue);
+.vensim-diagram {
+  display: block;
+  min-width: 980px;
+  width: 100%;
+  height: auto;
 }
 
-.factor-bank span,
-.flow-stage span,
-.hospital-stock > span {
-  color: var(--blue);
-  font-size: 0.74rem;
+.vensim-diagram text {
+  font-family: inherit;
+  fill: var(--ink);
+  pointer-events: none;
+}
+
+.vensim-diagram marker path {
+  fill: var(--ink);
+}
+
+.pipe {
+  stroke: var(--ink);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.cloud path {
+  fill: var(--white);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.cloud text,
+.loop-label {
+  font-size: 16px;
+  text-anchor: middle;
+  fill: var(--muted);
+}
+
+.stock rect {
+  fill: #fffdf7;
+  stroke: var(--ink);
+  stroke-width: 3;
+  rx: 0;
+}
+
+.stock text {
   font-weight: 800;
-  text-transform: uppercase;
+  text-anchor: middle;
 }
 
-.factor-bank ul {
-  display: grid;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  color: var(--muted);
-  list-style: none;
+.stock text + text {
+  font-size: 16px;
+  font-weight: 500;
+  fill: var(--muted);
 }
 
-.flow-stage {
-  min-height: 180px;
-  align-content: center;
-  text-align: center;
+.valve circle {
+  fill: var(--white);
+  stroke: var(--ink);
+  stroke-width: 3;
 }
 
-.flow-stage strong,
-.hospital-stock > strong {
-  font-size: 1.25rem;
+.valve path {
+  stroke: var(--ink);
+  stroke-width: 3;
+  stroke-linecap: round;
 }
 
-.flow-stage small,
-.hospital-stock > small,
-.process-factors small {
-  color: var(--muted);
-  line-height: 1.35;
+.valve text {
+  font-weight: 800;
+  text-anchor: middle;
 }
 
-.flow-stage.endpoint {
-  border-color: rgba(20, 124, 114, 0.45);
-  background: #eef8f6;
+.aux-node {
+  cursor: pointer;
+  outline: none;
 }
 
-.wide-flow-arrow {
-  position: relative;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--gold);
+.aux-node rect {
+  fill: var(--white);
+  stroke: var(--blue);
+  stroke-width: 2;
+  rx: 26;
 }
 
-.wide-flow-arrow::after {
-  position: absolute;
-  top: 50%;
-  right: -1px;
-  width: 12px;
-  height: 12px;
-  border-top: 4px solid var(--gold);
-  border-right: 4px solid var(--gold);
-  content: "";
-  transform: translateY(-50%) rotate(45deg);
+.aux-node text {
+  font-size: 15px;
+  font-weight: 700;
+  text-anchor: middle;
 }
 
-.hospital-stock {
-  border-color: rgba(188, 139, 45, 0.55);
-  background: #fffdf7;
+.causal-link,
+.feedback-link {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2.4;
+  stroke-dasharray: 7 7;
 }
 
-.process-factors {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 4px;
-}
-
-.process-factors button {
-  display: grid;
-  gap: 4px;
-  min-height: 86px;
-  padding: 12px;
-  border: 1px solid #eadfca;
-  border-radius: 8px;
-  background: var(--white);
+.feedback-link {
+  cursor: pointer;
+  stroke: var(--teal);
+  stroke-width: 3;
+  stroke-dasharray: none;
 }
 
 .diagram-node {
-  width: 100%;
   cursor: pointer;
   color: inherit;
   font: inherit;
   text-align: left;
-}
-
-.factor-bank .diagram-node {
-  padding: 8px 10px;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  background: transparent;
 }
 
 .causal-loops .diagram-node {
@@ -325,19 +324,33 @@ output {
 
 .diagram-node:hover,
 .diagram-node:focus-visible {
-  border-color: rgba(20, 124, 114, 0.45);
   outline: 3px solid rgba(20, 124, 114, 0.16);
   outline-offset: 2px;
 }
 
-.diagram-node.is-selected {
+.causal-loops .diagram-node.is-selected {
   border-color: var(--teal);
   background: #eef8f6;
 }
 
-.diagram-target.is-active,
-.diagram-node.is-active {
-  box-shadow: 0 0 0 3px rgba(188, 139, 45, 0.24);
+.aux-node.is-selected rect,
+.aux-node.is-active rect,
+.valve.is-active circle,
+.stock.is-active rect {
+  stroke: var(--teal);
+  stroke-width: 4;
+}
+
+.feedback-link.is-selected,
+.feedback-link.is-active,
+.causal-link.is-active {
+  stroke: var(--gold);
+  stroke-width: 4;
+  stroke-dasharray: none;
+}
+
+.feedback-link.is-selected {
+  stroke: var(--teal);
 }
 
 .diagram-insight {
@@ -371,6 +384,10 @@ output {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
   margin-top: 16px;
+}
+
+.causal-loops button {
+  width: 100%;
 }
 
 .causal-loops span {
@@ -452,31 +469,12 @@ output {
     grid-template-columns: 1fr;
   }
 
-  .systems-diagram {
-    grid-template-columns: 1fr;
-    gap: 10px;
+  .vensim-wrap {
+    padding: 4px;
   }
 
-  .flow-stage {
-    min-height: auto;
-    text-align: left;
-  }
-
-  .wide-flow-arrow {
-    width: 4px;
-    height: 28px;
-    justify-self: center;
-  }
-
-  .wide-flow-arrow::after {
-    top: auto;
-    right: 50%;
-    bottom: -1px;
-    transform: translateX(50%) rotate(135deg);
-  }
-
-  .process-factors {
-    grid-template-columns: 1fr;
+  .vensim-diagram {
+    min-width: 860px;
   }
 }
 

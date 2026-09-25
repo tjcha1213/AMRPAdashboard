@@ -116,6 +116,7 @@ const diagramInsights = {
 
 const diagramNodes = Array.from(document.querySelectorAll(".diagram-node"));
 const diagramTargets = Array.from(document.querySelectorAll("[data-node]"));
+const causalLinks = Array.from(document.querySelectorAll(".causal-link"));
 const insightTitle = document.querySelector("#diagramInsightTitle");
 const insightText = document.querySelector("#diagramInsightText");
 
@@ -130,6 +131,12 @@ function activateDiagramNode(node) {
     target.classList.toggle("is-selected", target === node);
   });
 
+  causalLinks.forEach((link) => {
+    const linkIds = (link.dataset.link || "").split(" ").filter(Boolean);
+    const isRelated = linkIds.some((id) => relatedIds.has(id));
+    link.classList.toggle("is-active", isRelated);
+  });
+
   const insight = diagramInsights[nodeId];
   if (insight) {
     insightTitle.textContent = insight.title;
@@ -139,4 +146,10 @@ function activateDiagramNode(node) {
 
 diagramNodes.forEach((node) => {
   node.addEventListener("click", () => activateDiagramNode(node));
+  node.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      activateDiagramNode(node);
+    }
+  });
 });

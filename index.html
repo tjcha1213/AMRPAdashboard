@@ -92,60 +92,114 @@
             <h2>Stock and Flow Diagram</h2>
             <p>AMRPA rehab hospital flow from patient-in to patient-out, with key demand and capacity drivers.</p>
           </div>
-          <span class="flow-tag">Causal loop view</span>
+          <span class="flow-tag">Vensim-style model</span>
         </div>
 
-        <div class="systems-diagram">
-          <div class="factor-bank inflow-factors">
-            <span>Factors affecting patient-in</span>
-            <ul>
-              <li><button class="diagram-node" data-node="acute-care" data-targets="patient-in">Acute care discharge</button></li>
-              <li><button class="diagram-node" data-node="proximity" data-targets="patient-in">Proximity to AMRPA rehab hospital</button></li>
-              <li><button class="diagram-node" data-node="insurance" data-targets="patient-in insurance-approval">Insurance coverage</button></li>
-              <li><button class="diagram-node" data-node="referrals" data-targets="patient-in quality">Physician and hospital referrals</button></li>
-              <li><button class="diagram-node" data-node="external-events" data-targets="patient-in beds staff-capacity">External events and demand shocks</button></li>
-            </ul>
-          </div>
+        <div class="vensim-wrap">
+          <svg class="vensim-diagram" viewBox="0 0 1160 620" role="img" aria-labelledby="vensimTitle vensimDesc">
+            <title id="vensimTitle">AMRPA rehab hospital Vensim-style stock and flow diagram</title>
+            <desc id="vensimDesc">Patient In flows from an external referral source into AMRPA Rehab Hospital, then Patient Out flows to a community or next-care sink. Causal factors influence rates, capacity, and length of stay.</desc>
+            <defs>
+              <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z"></path>
+              </marker>
+              <marker id="smallArrowHead" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+                <path d="M 0 0 L 8 4 L 0 8 z"></path>
+              </marker>
+            </defs>
 
-          <div class="flow-stage endpoint diagram-target" data-node="patient-in">
-            <span>Inflow</span>
-            <strong>Patient In</strong>
-            <small>Eligible rehab patients enter through referrals, discharge planning, and payer authorization.</small>
-          </div>
+            <g class="cloud source-cloud" aria-hidden="true">
+              <path d="M44 298 C33 280 50 261 72 267 C82 247 113 249 121 271 C146 268 162 291 150 311 C160 331 139 350 116 341 C101 361 67 354 64 330 C43 329 32 313 44 298 Z"></path>
+              <text x="96" y="376">Referral source</text>
+            </g>
 
-          <div class="wide-flow-arrow" aria-hidden="true"></div>
+            <line class="pipe" x1="155" y1="306" x2="426" y2="306" marker-end="url(#arrowHead)"></line>
+            <g class="valve diagram-target" data-node="patient-in" transform="translate(254 270)">
+              <circle cx="36" cy="36" r="26"></circle>
+              <path d="M20 20 L52 52 M52 20 L20 52"></path>
+              <text x="36" y="82">Patient In</text>
+            </g>
 
-          <div class="hospital-stock diagram-target" data-node="amrpa-hospital">
-            <span>Stock / Work-in-process</span>
-            <strong>AMRPA Rehab Hospital</strong>
-            <small>Patients receiving inpatient rehabilitation services before discharge.</small>
-            <div class="process-factors">
-              <button class="diagram-node" data-node="staff-capacity" data-targets="amrpa-hospital patient-out length-of-stay"><strong>Staff capacity</strong><small>Clinician availability and utilization</small></button>
-              <button class="diagram-node" data-node="severity" data-targets="amrpa-hospital length-of-stay staff-capacity"><strong>Severity</strong><small>Patient complexity and care intensity</small></button>
-              <button class="diagram-node" data-node="quality" data-targets="amrpa-hospital referrals patient-out"><strong>Quality</strong><small>Care coordination and functional improvement</small></button>
-              <button class="diagram-node" data-node="beds" data-targets="amrpa-hospital patient-in length-of-stay"><strong>Beds</strong><small>Physical capacity and occupancy</small></button>
-              <button class="diagram-node" data-node="insurance-approval" data-targets="patient-in amrpa-hospital patient-out"><strong>Insurance approval</strong><small>Authorization speed and coverage limits</small></button>
-              <button class="diagram-node" data-node="length-of-stay" data-targets="amrpa-hospital beds patient-out"><strong>Length of stay</strong><small>Time patients remain in the system</small></button>
-            </div>
-          </div>
+            <g class="stock diagram-target" data-node="amrpa-hospital">
+              <rect x="430" y="230" width="292" height="152"></rect>
+              <text x="576" y="292">AMRPA Rehab Hospital</text>
+              <text x="576" y="322">patients in treatment</text>
+            </g>
 
-          <div class="wide-flow-arrow" aria-hidden="true"></div>
+            <line class="pipe" x1="722" y1="306" x2="1000" y2="306" marker-end="url(#arrowHead)"></line>
+            <g class="valve diagram-target" data-node="patient-out" transform="translate(825 270)">
+              <circle cx="36" cy="36" r="26"></circle>
+              <path d="M20 20 L52 52 M52 20 L20 52"></path>
+              <text x="36" y="82">Patient Out</text>
+            </g>
 
-          <div class="flow-stage endpoint diagram-target" data-node="patient-out">
-            <span>Outflow</span>
-            <strong>Patient Out</strong>
-            <small>Patient exits through safe discharge, transfer, or next-care placement.</small>
-          </div>
+            <g class="cloud sink-cloud" aria-hidden="true">
+              <path d="M1010 298 C999 280 1016 261 1038 267 C1048 247 1079 249 1087 271 C1112 268 1128 291 1116 311 C1126 331 1105 350 1082 341 C1067 361 1033 354 1030 330 C1009 329 998 313 1010 298 Z"></path>
+              <text x="1062" y="376">Community / next care</text>
+            </g>
 
-          <div class="factor-bank outflow-factors">
-            <span>Patient-out conditions</span>
-            <ul>
-              <li>Discharge readiness</li>
-              <li>Functional improvement</li>
-              <li>Caregiver and home support</li>
-              <li>Post-acute follow-up plan</li>
-            </ul>
-          </div>
+            <g class="aux-node diagram-node" data-node="acute-care" data-targets="patient-in" tabindex="0" role="button" transform="translate(84 68)">
+              <rect width="164" height="50"></rect>
+              <text x="82" y="30">Acute care discharge</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="proximity" data-targets="patient-in" tabindex="0" role="button" transform="translate(54 154)">
+              <rect width="170" height="50"></rect>
+              <text x="85" y="30">Proximity</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="insurance" data-targets="patient-in insurance-approval" tabindex="0" role="button" transform="translate(280 68)">
+              <rect width="160" height="50"></rect>
+              <text x="80" y="30">Insurance</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="referrals" data-targets="patient-in quality" tabindex="0" role="button" transform="translate(260 154)">
+              <rect width="160" height="50"></rect>
+              <text x="80" y="30">Referrals</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="external-events" data-targets="patient-in beds staff-capacity" tabindex="0" role="button" transform="translate(472 48)">
+              <rect width="190" height="50"></rect>
+              <text x="95" y="30">External events</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="staff-capacity" data-targets="amrpa-hospital patient-out length-of-stay" tabindex="0" role="button" transform="translate(444 448)">
+              <rect width="174" height="50"></rect>
+              <text x="87" y="30">Staff capacity</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="severity" data-targets="amrpa-hospital length-of-stay staff-capacity" tabindex="0" role="button" transform="translate(646 448)">
+              <rect width="132" height="50"></rect>
+              <text x="66" y="30">Severity</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="quality" data-targets="amrpa-hospital referrals patient-out" tabindex="0" role="button" transform="translate(820 122)">
+              <rect width="126" height="50"></rect>
+              <text x="63" y="30">Quality</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="beds" data-targets="amrpa-hospital patient-in length-of-stay" tabindex="0" role="button" transform="translate(502 142)">
+              <rect width="112" height="50"></rect>
+              <text x="56" y="30">Beds</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="insurance-approval" data-targets="patient-in amrpa-hospital patient-out" tabindex="0" role="button" transform="translate(764 48)">
+              <rect width="196" height="50"></rect>
+              <text x="98" y="30">Insurance approval</text>
+            </g>
+            <g class="aux-node diagram-node" data-node="length-of-stay" data-targets="amrpa-hospital beds patient-out" tabindex="0" role="button" transform="translate(800 448)">
+              <rect width="172" height="50"></rect>
+              <text x="86" y="30">Length of stay</text>
+            </g>
+
+            <path class="causal-link" data-link="acute-care patient-in" d="M166 118 C185 166 232 221 274 268" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="proximity patient-in" d="M146 204 C182 235 220 255 265 278" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="insurance patient-in insurance-approval" d="M350 118 C357 174 333 229 313 273" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="referrals patient-in quality" d="M338 204 C318 228 304 247 296 270" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="external-events patient-in staff-capacity beds" d="M545 98 C480 129 380 205 318 279" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="beds patient-in amrpa-hospital length-of-stay" d="M558 192 C559 206 562 218 566 230" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="insurance-approval patient-in amrpa-hospital patient-out" d="M848 98 C810 158 720 197 634 230" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="quality referrals patient-out" d="M880 172 C877 203 872 236 866 270" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="staff-capacity amrpa-hospital patient-out length-of-stay" d="M528 448 C535 424 548 400 562 382" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="severity amrpa-hospital length-of-stay staff-capacity" d="M706 448 C683 419 650 397 620 382" marker-end="url(#smallArrowHead)"></path>
+            <path class="causal-link" data-link="length-of-stay amrpa-hospital beds patient-out" d="M866 448 C858 414 858 382 862 332" marker-end="url(#smallArrowHead)"></path>
+
+            <path class="feedback-link diagram-node" data-node="capacity-loop" data-targets="patient-in amrpa-hospital staff-capacity beds length-of-stay patient-out" tabindex="0" role="button" d="M292 396 C390 572 782 572 862 396" marker-end="url(#smallArrowHead)"></path>
+            <text class="loop-label" x="575" y="560">B: capacity loop</text>
+            <path class="feedback-link diagram-node" data-node="quality-loop" data-targets="quality patient-out referrals patient-in" tabindex="0" role="button" d="M880 122 C798 8 386 8 340 154" marker-end="url(#smallArrowHead)"></path>
+            <text class="loop-label" x="614" y="28">R: quality-referral loop</text>
+          </svg>
         </div>
 
         <div class="diagram-insight" aria-live="polite">
