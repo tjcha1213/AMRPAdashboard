@@ -9,6 +9,9 @@
   --blue: #315f91;
   --red: #b6544b;
   --gold: #bc8b2d;
+  --soft-teal: #eef8f6;
+  --soft-blue: #f1f6fb;
+  --soft-gold: #fff8e8;
 }
 
 * {
@@ -140,6 +143,105 @@ main {
   font-size: 2rem;
 }
 
+.tradeoff-panel {
+  margin-bottom: 18px;
+}
+
+.tradeoff-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.65fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.tradeoff-chart {
+  width: 100%;
+  min-height: 320px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfc 100%);
+}
+
+.chart-axis {
+  stroke: var(--ink);
+  stroke-width: 2.2;
+}
+
+.chart-grid line {
+  stroke: #dfe7eb;
+  stroke-width: 1;
+}
+
+.tradeoff-frontier {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+.tradeoff-point {
+  fill: var(--gold);
+  stroke: var(--ink);
+  stroke-width: 3;
+  transition: cx 180ms ease, cy 180ms ease;
+}
+
+.point-label,
+.chart-label,
+.chart-tick {
+  fill: var(--muted);
+  font-size: 14px;
+}
+
+.point-label {
+  fill: var(--ink);
+  font-weight: 800;
+}
+
+.chart-label {
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+.chart-label.rotate {
+  transform: rotate(-90deg);
+}
+
+.tradeoff-readout {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.tradeoff-readout div {
+  display: grid;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfc;
+}
+
+.tradeoff-readout span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.tradeoff-readout strong {
+  font-size: 1.8rem;
+}
+
+.tradeoff-readout p {
+  margin-bottom: 0;
+  padding: 14px;
+  border-left: 4px solid var(--teal);
+  background: var(--soft-teal);
+  color: var(--muted);
+}
+
 label {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -196,10 +298,14 @@ output {
 
 .vensim-wrap {
   overflow-x: auto;
-  padding: 8px;
+  padding: 12px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fbfcfc;
+  background:
+    linear-gradient(90deg, rgba(216, 224, 228, 0.35) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(216, 224, 228, 0.35) 1px, transparent 1px),
+    #fbfcfc;
+  background-size: 40px 40px;
 }
 
 .vensim-diagram {
@@ -216,18 +322,42 @@ output {
 }
 
 .vensim-diagram marker path {
-  fill: var(--ink);
+  fill: var(--blue);
+}
+
+.model-zone {
+  stroke: #dce5e9;
+  stroke-width: 1.4;
+  rx: 12;
+}
+
+.demand-zone,
+.discharge-zone {
+  fill: rgba(49, 95, 145, 0.045);
+}
+
+.care-zone {
+  fill: rgba(188, 139, 45, 0.075);
+}
+
+.zone-label {
+  fill: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-anchor: middle;
+  text-transform: uppercase;
 }
 
 .pipe {
-  stroke: var(--ink);
+  stroke: #21313a;
   stroke-width: 8;
   stroke-linecap: round;
 }
 
 .cloud path {
   fill: var(--white);
-  stroke: var(--ink);
+  stroke: #80909a;
   stroke-width: 2;
 }
 
@@ -239,8 +369,8 @@ output {
 }
 
 .stock rect {
-  fill: #fffdf7;
-  stroke: var(--ink);
+  fill: var(--soft-gold);
+  stroke: #6e531b;
   stroke-width: 3;
   rx: 0;
 }
@@ -258,12 +388,12 @@ output {
 
 .valve circle {
   fill: var(--white);
-  stroke: var(--ink);
+  stroke: var(--blue);
   stroke-width: 3;
 }
 
 .valve path {
-  stroke: var(--ink);
+  stroke: var(--blue);
   stroke-width: 3;
   stroke-linecap: round;
 }
@@ -279,7 +409,7 @@ output {
 }
 
 .aux-node rect {
-  fill: var(--white);
+  fill: var(--soft-blue);
   stroke: var(--blue);
   stroke-width: 2;
   rx: 26;
@@ -294,9 +424,9 @@ output {
 .causal-link,
 .feedback-link {
   fill: none;
-  stroke: var(--muted);
+  stroke: #6f7d86;
   stroke-width: 2.4;
-  stroke-dasharray: 7 7;
+  stroke-dasharray: 6 8;
 }
 
 .feedback-link {
@@ -360,7 +490,7 @@ output {
   padding: 16px;
   border: 1px solid rgba(20, 124, 114, 0.32);
   border-radius: 8px;
-  background: #f5fbfa;
+  background: var(--soft-teal);
 }
 
 .diagram-insight span {
@@ -569,6 +699,7 @@ output {
   .topbar,
   .summary,
   .workspace,
+  .tradeoff-layout,
   .causal-loops,
   .explorer-controls,
   .system-meters,

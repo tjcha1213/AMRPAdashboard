@@ -17,8 +17,67 @@ const metrics = {
   medicalCapacity: document.querySelector("#medicalCapacity")
 };
 
+const tradeoffPoint = document.querySelector("#tradeoffPoint");
+const tradeoffPointLabel = document.querySelector("#tradeoffPointLabel");
+const graphProfit = document.querySelector("#graphProfit");
+const graphSatisfaction = document.querySelector("#graphSatisfaction");
+const tradeoffNarrative = document.querySelector("#tradeoffNarrative");
+
+let basePerformance = {
+  profit: 0,
+  recovery: 0,
+  occupancy: 0,
+  capacity: 0,
+  satisfaction: 0
+};
+
+let explorerTotals = {
+  profit: 0,
+  recovery: 0,
+  occupancy: 0,
+  capacity: 0,
+  throughput: 0,
+  satisfaction: 0
+};
+
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
+}
+
+function refreshPerformance() {
+  const adjustedProfit = clamp(basePerformance.profit + explorerTotals.profit * 0.035, 0.2, 7);
+  const adjustedRecovery = clamp(basePerformance.recovery + explorerTotals.recovery * 0.35, 45, 98);
+  const adjustedOccupancy = clamp(basePerformance.occupancy + explorerTotals.occupancy * 0.35, 40, 99);
+  const adjustedCapacity = clamp(basePerformance.capacity + explorerTotals.capacity * 0.35, 35, 99);
+  const adjustedSatisfaction = clamp(basePerformance.satisfaction + explorerTotals.satisfaction * 0.45, 45, 99);
+
+  metrics.profit.textContent = `$${adjustedProfit.toFixed(1)}M`;
+  metrics.recoveryRate.textContent = `${Math.round(adjustedRecovery)}%`;
+  metrics.bedOccupancy.textContent = `${Math.round(adjustedOccupancy)}%`;
+  metrics.medicalCapacity.textContent = `${Math.round(adjustedCapacity)}%`;
+
+  const pointX = 62 + (adjustedProfit / 7) * 458;
+  const pointY = 284 - ((adjustedSatisfaction - 50) / 50) * 242;
+  const x = clamp(pointX, 62, 520);
+  const y = clamp(pointY, 42, 284);
+
+  tradeoffPoint.setAttribute("cx", x.toFixed(1));
+  tradeoffPoint.setAttribute("cy", y.toFixed(1));
+  tradeoffPointLabel.setAttribute("x", (x + 16).toFixed(1));
+  tradeoffPointLabel.setAttribute("y", (y - 8).toFixed(1));
+  tradeoffPointLabel.textContent = `$${adjustedProfit.toFixed(1)}M / ${Math.round(adjustedSatisfaction)}`;
+  graphProfit.textContent = `$${adjustedProfit.toFixed(1)}M`;
+  graphSatisfaction.textContent = `${Math.round(adjustedSatisfaction)}`;
+
+  if (adjustedProfit >= 4.5 && adjustedSatisfaction >= 85) {
+    tradeoffNarrative.textContent = "High-value zone: the current configuration supports both financial performance and patient experience.";
+  } else if (adjustedProfit >= 4.5) {
+    tradeoffNarrative.textContent = "Financially strong, but patient satisfaction may need protection through quality, staffing, or discharge coordination.";
+  } else if (adjustedSatisfaction >= 85) {
+    tradeoffNarrative.textContent = "Patient experience is strong, but the operating model may need higher throughput, occupancy discipline, or reimbursement strength.";
+  } else {
+    tradeoffNarrative.textContent = "Watch zone: this scenario needs improvement in both financial performance and patient experience.";
+  }
 }
 
 function updateDashboard() {
@@ -38,11 +97,17 @@ function updateDashboard() {
   const bedOccupancy = clamp(58 + demandPressure * 0.22 + complexityMix * 0.15 - specialistShare * 0.04, 45, 98);
   const medicalCapacity = clamp(88 - Math.max(0, demandPressure - 100) * 0.18 - complexityMix * 0.12 + specialistShare * 0.1, 45, 96);
   const profit = clamp(1.1 + recoveryRate * 0.035 + bedOccupancy * 0.018 - Math.max(0, bedOccupancy - 90) * 0.09 - demandPenalty * 0.018, 0.2, 6.8);
+  const satisfaction = clamp(48 + recoveryRate * 0.42 + medicalCapacity * 0.12 - Math.max(0, bedOccupancy - 90) * 0.85 - demandPenalty * 0.45, 45, 98);
 
-  metrics.profit.textContent = `$${profit.toFixed(1)}M`;
-  metrics.recoveryRate.textContent = `${Math.round(recoveryRate)}%`;
-  metrics.bedOccupancy.textContent = `${Math.round(bedOccupancy)}%`;
-  metrics.medicalCapacity.textContent = `${Math.round(medicalCapacity)}%`;
+  basePerformance = {
+    profit,
+    recovery: recoveryRate,
+    occupancy: bedOccupancy,
+    capacity: medicalCapacity,
+    satisfaction
+  };
+
+  refreshPerformance();
 }
 
 Object.values(sliders).forEach((slider) => {
@@ -141,67 +206,67 @@ const factorEffects = {
   "acute-care": {
     label: "Acute care discharge",
     targets: ["patient-in"],
-    scores: { profit: 5, recovery: -1, occupancy: 16, capacity: -6, throughput: 5 },
+    scores: { profit: 5, recovery: -1, occupancy: 16, capacity: -6, throughput: 5, satisfaction: -4 },
     summary: "raises patient volume, increasing occupancy and revenue opportunity while stressing medical capacity"
   },
   proximity: {
     label: "Proximity",
     targets: ["patient-in"],
-    scores: { profit: 3, recovery: 4, occupancy: 6, capacity: 1, throughput: 3 },
+    scores: { profit: 3, recovery: 4, occupancy: 6, capacity: 1, throughput: 3, satisfaction: 7 },
     summary: "improves access and support, modestly improving recovery and throughput"
   },
   insurance: {
     label: "Insurance coverage",
     targets: ["patient-in", "insurance-approval"],
-    scores: { profit: 10, recovery: 2, occupancy: 7, capacity: 2, throughput: 4 },
+    scores: { profit: 10, recovery: 2, occupancy: 7, capacity: 2, throughput: 4, satisfaction: 4 },
     summary: "improves reimbursement feasibility and eligibility for admission"
   },
   referrals: {
     label: "Referrals",
     targets: ["patient-in", "quality"],
-    scores: { profit: 8, recovery: 3, occupancy: 12, capacity: -3, throughput: 5 },
+    scores: { profit: 8, recovery: 3, occupancy: 12, capacity: -3, throughput: 5, satisfaction: 2 },
     summary: "expands patient volume and reinforces the quality-referral loop"
   },
   "external-events": {
     label: "External events",
     targets: ["patient-in", "beds", "staff-capacity"],
-    scores: { profit: -4, recovery: -6, occupancy: 18, capacity: -14, throughput: -5 },
+    scores: { profit: -4, recovery: -6, occupancy: 18, capacity: -14, throughput: -5, satisfaction: -10 },
     summary: "creates demand shocks that raise bed occupancy and reduce available medical capacity"
   },
   "staff-capacity": {
     label: "Staff capacity",
     targets: ["amrpa-hospital", "patient-out", "length-of-stay"],
-    scores: { profit: 6, recovery: 9, occupancy: -4, capacity: 18, throughput: 16 },
+    scores: { profit: 6, recovery: 9, occupancy: -4, capacity: 18, throughput: 16, satisfaction: 10 },
     summary: "raises medical capacity by improving staff availability, therapy delivery, and throughput"
   },
   severity: {
     label: "Severity",
     targets: ["amrpa-hospital", "length-of-stay", "staff-capacity"],
-    scores: { profit: -6, recovery: -8, occupancy: 10, capacity: -12, throughput: -9 },
+    scores: { profit: -6, recovery: -8, occupancy: 10, capacity: -12, throughput: -9, satisfaction: -9 },
     summary: "increases resource intensity, lowering throughput and recovery unless capacity rises"
   },
   quality: {
     label: "Quality",
     targets: ["amrpa-hospital", "referrals", "patient-out"],
-    scores: { profit: 9, recovery: 16, occupancy: -3, capacity: 4, throughput: 8 },
+    scores: { profit: 9, recovery: 16, occupancy: -3, capacity: 4, throughput: 8, satisfaction: 16 },
     summary: "improves recovery rate, reputation, referrals, and discharge reliability"
   },
   beds: {
     label: "Beds",
     targets: ["amrpa-hospital", "patient-in", "length-of-stay"],
-    scores: { profit: 5, recovery: 2, occupancy: -10, capacity: 10, throughput: 6 },
+    scores: { profit: 5, recovery: 2, occupancy: -10, capacity: 10, throughput: 6, satisfaction: 3 },
     summary: "adds physical capacity, reducing bed gridlock and supporting more throughput"
   },
   "insurance-approval": {
     label: "Insurance approval",
     targets: ["patient-in", "amrpa-hospital", "patient-out"],
-    scores: { profit: 7, recovery: 3, occupancy: -2, capacity: 6, throughput: 10 },
+    scores: { profit: 7, recovery: 3, occupancy: -2, capacity: 6, throughput: 10, satisfaction: 6 },
     summary: "reduces authorization delays, improving patient throughput and financial predictability"
   },
   "length-of-stay": {
     label: "Length of stay",
     targets: ["amrpa-hospital", "beds", "patient-out"],
-    scores: { profit: -8, recovery: 1, occupancy: 15, capacity: -12, throughput: -14 },
+    scores: { profit: -8, recovery: 1, occupancy: 15, capacity: -12, throughput: -14, satisfaction: -6 },
     summary: "keeps patients in beds longer, increasing occupancy while lowering medical capacity and throughput"
   }
 };
@@ -261,7 +326,7 @@ function updateMeter(key, value) {
 
 function updateExplorer() {
   const active = activeFactorIds();
-  const totals = { profit: 0, recovery: 0, occupancy: 0, capacity: 0, throughput: 0 };
+  const totals = { profit: 0, recovery: 0, occupancy: 0, capacity: 0, throughput: 0, satisfaction: 0 };
   const relatedIds = new Set();
   const summaries = [];
 
@@ -281,7 +346,13 @@ function updateExplorer() {
     summaries.push(`${effect.label} ${effect.summary}`);
   });
 
-  Object.entries(totals).forEach(([key, value]) => updateMeter(key, value));
+  explorerTotals = totals;
+  Object.entries(totals).forEach(([key, value]) => {
+    if (systemScores[key] && systemMeters[key]) {
+      updateMeter(key, value);
+    }
+  });
+  refreshPerformance();
 
   if (active.length > 0) {
     renderDiagramHighlights(relatedIds);

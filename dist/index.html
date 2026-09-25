@@ -54,6 +54,56 @@
         </article>
       </section>
 
+      <section class="panel tradeoff-panel" aria-label="Profit and patient satisfaction tradeoff graph">
+        <div class="section-heading">
+          <div>
+            <h2>Profit vs. Patient Satisfaction</h2>
+            <p>Executive tradeoff view that responds to the scenario inputs and causal-loop factor toggles.</p>
+          </div>
+          <span class="flow-tag">Interactive KPI graph</span>
+        </div>
+        <div class="tradeoff-layout">
+          <svg class="tradeoff-chart" viewBox="0 0 560 340" role="img" aria-labelledby="tradeoffTitle tradeoffDesc">
+            <title id="tradeoffTitle">Profit versus patient satisfaction chart</title>
+            <desc id="tradeoffDesc">The point moves as scenario sliders and causal-loop factor toggles change profit and patient satisfaction.</desc>
+            <line class="chart-axis" x1="62" y1="284" x2="520" y2="284"></line>
+            <line class="chart-axis" x1="62" y1="42" x2="62" y2="284"></line>
+            <g class="chart-grid">
+              <line x1="62" y1="236" x2="520" y2="236"></line>
+              <line x1="62" y1="188" x2="520" y2="188"></line>
+              <line x1="62" y1="140" x2="520" y2="140"></line>
+              <line x1="62" y1="92" x2="520" y2="92"></line>
+              <line x1="154" y1="42" x2="154" y2="284"></line>
+              <line x1="246" y1="42" x2="246" y2="284"></line>
+              <line x1="338" y1="42" x2="338" y2="284"></line>
+              <line x1="430" y1="42" x2="430" y2="284"></line>
+            </g>
+            <path class="tradeoff-frontier" d="M90 260 C170 210 238 178 306 154 C378 129 454 102 506 68"></path>
+            <text class="chart-label" x="286" y="326">Profit ($M)</text>
+            <text class="chart-label rotate" x="-176" y="18">Patient satisfaction</text>
+            <text class="chart-tick" x="58" y="304">$0</text>
+            <text class="chart-tick" x="246" y="304">$3.5M</text>
+            <text class="chart-tick" x="493" y="304">$7M</text>
+            <text class="chart-tick" x="22" y="288">50</text>
+            <text class="chart-tick" x="22" y="188">75</text>
+            <text class="chart-tick" x="22" y="48">100</text>
+            <circle id="tradeoffPoint" class="tradeoff-point" cx="260" cy="150" r="10"></circle>
+            <text id="tradeoffPointLabel" class="point-label" x="276" y="144">$0.0M / 0</text>
+          </svg>
+          <div class="tradeoff-readout">
+            <div>
+              <span>Modeled profit</span>
+              <strong id="graphProfit">$0.0M</strong>
+            </div>
+            <div>
+              <span>Patient satisfaction</span>
+              <strong id="graphSatisfaction">0</strong>
+            </div>
+            <p id="tradeoffNarrative">Adjust the sliders or toggle factors in the system diagram to explore the profit-experience tradeoff.</p>
+          </div>
+        </div>
+      </section>
+
       <section class="workspace">
         <div class="panel">
           <h2>Scenario Inputs</h2>
@@ -107,6 +157,13 @@
                 <path d="M 0 0 L 8 4 L 0 8 z"></path>
               </marker>
             </defs>
+
+            <rect class="model-zone demand-zone" x="28" y="28" width="392" height="540"></rect>
+            <rect class="model-zone care-zone" x="430" y="116" width="292" height="330"></rect>
+            <rect class="model-zone discharge-zone" x="740" y="28" width="392" height="540"></rect>
+            <text class="zone-label" x="224" y="48">Demand and admission drivers</text>
+            <text class="zone-label" x="576" y="136">AMRPA operating system</text>
+            <text class="zone-label" x="936" y="48">Discharge and value realization</text>
 
             <g class="cloud source-cloud" aria-hidden="true">
               <path d="M44 298 C33 280 50 261 72 267 C82 247 113 249 121 271 C146 268 162 291 150 311 C160 331 139 350 116 341 C101 361 67 354 64 330 C43 329 32 313 44 298 Z"></path>
