@@ -99,15 +99,15 @@
           <div class="factor-bank inflow-factors">
             <span>Factors affecting patient-in</span>
             <ul>
-              <li>Acute care discharge</li>
-              <li>Proximity to AMRPA rehab hospital</li>
-              <li>Insurance coverage</li>
-              <li>Physician and hospital referrals</li>
-              <li>External events and demand shocks</li>
+              <li><button class="diagram-node" data-node="acute-care" data-targets="patient-in">Acute care discharge</button></li>
+              <li><button class="diagram-node" data-node="proximity" data-targets="patient-in">Proximity to AMRPA rehab hospital</button></li>
+              <li><button class="diagram-node" data-node="insurance" data-targets="patient-in insurance-approval">Insurance coverage</button></li>
+              <li><button class="diagram-node" data-node="referrals" data-targets="patient-in quality">Physician and hospital referrals</button></li>
+              <li><button class="diagram-node" data-node="external-events" data-targets="patient-in beds staff-capacity">External events and demand shocks</button></li>
             </ul>
           </div>
 
-          <div class="flow-stage endpoint">
+          <div class="flow-stage endpoint diagram-target" data-node="patient-in">
             <span>Inflow</span>
             <strong>Patient In</strong>
             <small>Eligible rehab patients enter through referrals, discharge planning, and payer authorization.</small>
@@ -115,23 +115,23 @@
 
           <div class="wide-flow-arrow" aria-hidden="true"></div>
 
-          <div class="hospital-stock">
+          <div class="hospital-stock diagram-target" data-node="amrpa-hospital">
             <span>Stock / Work-in-process</span>
             <strong>AMRPA Rehab Hospital</strong>
             <small>Patients receiving inpatient rehabilitation services before discharge.</small>
             <div class="process-factors">
-              <div><strong>Staff capacity</strong><small>Clinician availability and utilization</small></div>
-              <div><strong>Severity</strong><small>Patient complexity and care intensity</small></div>
-              <div><strong>Quality</strong><small>Care coordination and functional improvement</small></div>
-              <div><strong>Beds</strong><small>Physical capacity and occupancy</small></div>
-              <div><strong>Insurance approval</strong><small>Authorization speed and coverage limits</small></div>
-              <div><strong>Length of stay</strong><small>Time patients remain in the system</small></div>
+              <button class="diagram-node" data-node="staff-capacity" data-targets="amrpa-hospital patient-out length-of-stay"><strong>Staff capacity</strong><small>Clinician availability and utilization</small></button>
+              <button class="diagram-node" data-node="severity" data-targets="amrpa-hospital length-of-stay staff-capacity"><strong>Severity</strong><small>Patient complexity and care intensity</small></button>
+              <button class="diagram-node" data-node="quality" data-targets="amrpa-hospital referrals patient-out"><strong>Quality</strong><small>Care coordination and functional improvement</small></button>
+              <button class="diagram-node" data-node="beds" data-targets="amrpa-hospital patient-in length-of-stay"><strong>Beds</strong><small>Physical capacity and occupancy</small></button>
+              <button class="diagram-node" data-node="insurance-approval" data-targets="patient-in amrpa-hospital patient-out"><strong>Insurance approval</strong><small>Authorization speed and coverage limits</small></button>
+              <button class="diagram-node" data-node="length-of-stay" data-targets="amrpa-hospital beds patient-out"><strong>Length of stay</strong><small>Time patients remain in the system</small></button>
             </div>
           </div>
 
           <div class="wide-flow-arrow" aria-hidden="true"></div>
 
-          <div class="flow-stage endpoint">
+          <div class="flow-stage endpoint diagram-target" data-node="patient-out">
             <span>Outflow</span>
             <strong>Patient Out</strong>
             <small>Patient exits through safe discharge, transfer, or next-care placement.</small>
@@ -148,23 +148,29 @@
           </div>
         </div>
 
+        <div class="diagram-insight" aria-live="polite">
+          <span>Selected relationship</span>
+          <strong id="diagramInsightTitle">Click a factor or loop</strong>
+          <p id="diagramInsightText">Choose any item in the diagram to see how it affects patient flow through the AMRPA rehab hospital.</p>
+        </div>
+
         <div class="causal-loops">
-          <div>
+          <button class="diagram-node" data-node="capacity-loop" data-targets="patient-in amrpa-hospital staff-capacity beds length-of-stay patient-out">
             <strong>Capacity loop</strong>
             <span>More patient-in volume raises occupancy, which strains beds and staff capacity, increasing length of stay and slowing future admissions.</span>
-          </div>
-          <div>
+          </button>
+          <button class="diagram-node" data-node="quality-loop" data-targets="quality patient-out referrals patient-in">
             <strong>Quality loop</strong>
             <span>Higher care quality improves outcomes and patient satisfaction, strengthening referrals and future patient-in demand.</span>
-          </div>
-          <div>
+          </button>
+          <button class="diagram-node" data-node="insurance-loop" data-targets="insurance insurance-approval patient-in patient-out">
             <strong>Insurance loop</strong>
             <span>Faster insurance approval reduces admission delays and discharge friction, improving flow from patient-in to patient-out.</span>
-          </div>
-          <div>
+          </button>
+          <button class="diagram-node" data-node="severity-loop" data-targets="severity staff-capacity length-of-stay beds patient-out">
             <strong>Severity loop</strong>
             <span>Higher severity increases resource needs and length of stay, reducing available capacity unless staffing or beds increase.</span>
-          </div>
+          </button>
         </div>
       </section>
 
@@ -177,6 +183,28 @@
           <div class="row"><span>Length of stay</span><span>Balances recovery time and capacity</span><span>Reduce only when outcomes hold</span></div>
           <div class="row"><span>Utilization</span><span>Shows staffing efficiency and bottlenecks</span><span>Keep in productive range</span></div>
           <div class="row"><span>Readmissions</span><span>Flags discharge quality and care mismatch</span><span>Lower through better match quality</span></div>
+        </div>
+      </section>
+
+      <section class="panel data-section">
+        <h2>Data Sources / Databases Used</h2>
+        <div class="data-list">
+          <div>
+            <strong>External databases</strong>
+            <span>None used. The dashboard is not connected to live EHR, payer, claims, CMS, AMRPA member, or hospital operations databases.</span>
+          </div>
+          <div>
+            <strong>Class handout</strong>
+            <span>AMRPA recitation prompt from the uploaded scanned PDF supplied the project frame, client, deliverables, and simulation focus.</span>
+          </div>
+          <div>
+            <strong>User-provided model inputs</strong>
+            <span>Patient-in drivers and in-process factors came from the project instructions in this conversation.</span>
+          </div>
+          <div>
+            <strong>Synthetic dashboard assumptions</strong>
+            <span>KPI values and slider behavior are illustrative model assumptions coded in the static site, not real hospital performance data.</span>
+          </div>
         </div>
       </section>
     </main>

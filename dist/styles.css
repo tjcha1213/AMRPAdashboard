@@ -230,8 +230,9 @@ output {
   display: grid;
   gap: 8px;
   margin: 0;
-  padding-left: 18px;
+  padding: 0;
   color: var(--muted);
+  list-style: none;
 }
 
 .flow-stage {
@@ -288,7 +289,7 @@ output {
   margin-top: 4px;
 }
 
-.process-factors div {
+.process-factors button {
   display: grid;
   gap: 4px;
   min-height: 86px;
@@ -298,6 +299,73 @@ output {
   background: var(--white);
 }
 
+.diagram-node {
+  width: 100%;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.factor-bank .diagram-node {
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+}
+
+.causal-loops .diagram-node {
+  display: grid;
+  gap: 4px;
+  padding: 14px;
+  border: 0;
+  border-left: 4px solid var(--teal);
+  background: #f5f8fb;
+}
+
+.diagram-node:hover,
+.diagram-node:focus-visible {
+  border-color: rgba(20, 124, 114, 0.45);
+  outline: 3px solid rgba(20, 124, 114, 0.16);
+  outline-offset: 2px;
+}
+
+.diagram-node.is-selected {
+  border-color: var(--teal);
+  background: #eef8f6;
+}
+
+.diagram-target.is-active,
+.diagram-node.is-active {
+  box-shadow: 0 0 0 3px rgba(188, 139, 45, 0.24);
+}
+
+.diagram-insight {
+  display: grid;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid rgba(20, 124, 114, 0.32);
+  border-radius: 8px;
+  background: #f5fbfa;
+}
+
+.diagram-insight span {
+  color: var(--teal);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.diagram-insight strong {
+  font-size: 1.1rem;
+}
+
+.diagram-insight p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
 .causal-loops {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -305,16 +373,32 @@ output {
   margin-top: 16px;
 }
 
-.causal-loops div {
-  display: grid;
-  gap: 4px;
-  padding: 14px;
-  border-left: 4px solid var(--teal);
-  background: #f5f8fb;
-}
-
 .causal-loops span {
   color: var(--muted);
+}
+
+.data-section {
+  margin-top: 18px;
+}
+
+.data-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.data-list div {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfc;
+}
+
+.data-list span {
+  color: var(--muted);
+  line-height: 1.4;
 }
 
 .metric-table {
@@ -347,7 +431,8 @@ output {
   .topbar,
   .summary,
   .workspace,
-  .causal-loops {
+  .causal-loops,
+  .data-list {
     grid-template-columns: 1fr;
   }
 
