@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AMRPA Rehab Operations Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">AMRPA Operations Tool</p>
+        <h1>Rehab Hospital Service Delivery Dashboard</h1>
+      </div>
+      <div class="model-pill">Generalist vs. Specialist Model</div>
+    </header>
+
+    <main>
+      <section class="summary">
+        <div>
+          <h2>Project Objective</h2>
+          <p>
+            Build an interactive operations model that helps rehab hospitals compare care delivery
+            models, improve patient satisfaction, and strengthen operational effectiveness.
+          </p>
+        </div>
+        <div class="recommendation">
+          <span>Current Recipe</span>
+          <strong>Hybrid triage model</strong>
+          <p>Generalists handle routine cases; specialists support high-complexity patients and escalation paths.</p>
+        </div>
+      </section>
+
+      <section class="kpi-grid" aria-label="Key performance indicators">
+        <article class="kpi">
+          <span>Patient Satisfaction</span>
+          <strong id="satisfaction">87</strong>
+          <small>Target: 90+</small>
+        </article>
+        <article class="kpi">
+          <span>Avg. Length of Stay</span>
+          <strong id="lengthOfStay">13.2</strong>
+          <small>Target: 12.5 days</small>
+        </article>
+        <article class="kpi">
+          <span>Therapist Utilization</span>
+          <strong id="utilization">81%</strong>
+          <small>Target: 78-85%</small>
+        </article>
+        <article class="kpi">
+          <span>Readmission Rate</span>
+          <strong id="readmission">8.4%</strong>
+          <small>Target: under 7%</small>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <div class="panel">
+          <h2>Scenario Inputs</h2>
+          <label>
+            Specialist share
+            <input id="specialistShare" type="range" min="10" max="90" value="45">
+            <output id="specialistShareOut">45%</output>
+          </label>
+          <label>
+            High-complexity case mix
+            <input id="complexityMix" type="range" min="15" max="70" value="38">
+            <output id="complexityMixOut">38%</output>
+          </label>
+          <label>
+            Demand pressure
+            <input id="demandPressure" type="range" min="70" max="130" value="100">
+            <output id="demandPressureOut">100%</output>
+          </label>
+        </div>
+
+        <div class="panel">
+          <h2>Stakeholder Map</h2>
+          <ul class="stakeholders">
+            <li><strong>Patients and families</strong><span>Recovery quality, wait time, communication, safe discharge</span></li>
+            <li><strong>Clinicians</strong><span>Right patient-provider match, workload balance, outcomes</span></li>
+            <li><strong>Operations leaders</strong><span>Throughput, staffing efficiency, bed utilization, cost per case</span></li>
+            <li><strong>Payers</strong><span>Value, appropriate length of stay, lower readmissions</span></li>
+            <li><strong>AMRPA members</strong><span>Repeatable scenario tool and clear recommendations</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel process-section" aria-label="Patient process map">
+        <div class="section-heading">
+          <div>
+            <h2>Patient Process Map</h2>
+            <p>Core flow for the rehab hospital model, from patient-in to patient-out.</p>
+          </div>
+          <span class="flow-tag">Stock and flow view</span>
+        </div>
+        <div class="process-map">
+          <div class="process-step endpoint">
+            <span>Start</span>
+            <strong>Patient In</strong>
+            <small>Referral or admission request enters the system</small>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <div class="process-step">
+            <span>Step 1</span>
+            <strong>Intake and Triage</strong>
+            <small>Assess diagnosis, acuity, complexity, payer, and bed availability</small>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <div class="process-step">
+            <span>Step 2</span>
+            <strong>Care Model Match</strong>
+            <small>Assign generalist, specialist, or hybrid care pathway</small>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <div class="process-step">
+            <span>Step 3</span>
+            <strong>Therapy Delivery</strong>
+            <small>Coordinate physician, nursing, therapy, and case management work</small>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <div class="process-step">
+            <span>Step 4</span>
+            <strong>Progress Review</strong>
+            <small>Monitor functional improvement, barriers, delays, and satisfaction</small>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <div class="process-step">
+            <span>Step 5</span>
+            <strong>Discharge Planning</strong>
+            <small>Prepare family, home services, follow-up, and payer documentation</small>
+          </div>
+          <div class="flow-arrow" aria-hidden="true"></div>
+          <div class="process-step endpoint">
+            <span>End</span>
+            <strong>Patient Out</strong>
+            <small>Safe discharge, community transition, or next-care placement</small>
+          </div>
+        </div>
+        <div class="feedback-loops">
+          <div>
+            <strong>Operational feedback</strong>
+            <span>Wait time, utilization, bed capacity, and staffing pressure feed back into intake decisions.</span>
+          </div>
+          <div>
+            <strong>Clinical feedback</strong>
+            <span>Functional improvement, readmissions, and satisfaction refine the care model match.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Success KPI Framework</h2>
+        <div class="metric-table">
+          <div class="row header"><span>KPI</span><span>Why it matters</span><span>Target logic</span></div>
+          <div class="row"><span>Patient satisfaction</span><span>Captures experience and perceived value</span><span>Increase without harming access</span></div>
+          <div class="row"><span>Functional improvement</span><span>Measures clinical progress during stay</span><span>Improve per patient episode</span></div>
+          <div class="row"><span>Length of stay</span><span>Balances recovery time and capacity</span><span>Reduce only when outcomes hold</span></div>
+          <div class="row"><span>Utilization</span><span>Shows staffing efficiency and bottlenecks</span><span>Keep in productive range</span></div>
+          <div class="row"><span>Readmissions</span><span>Flags discharge quality and care mismatch</span><span>Lower through better match quality</span></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
