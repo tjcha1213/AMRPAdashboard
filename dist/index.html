@@ -159,6 +159,61 @@
           <span class="flow-tag">Vensim-style model</span>
         </div>
 
+        <div class="explorer-panel" aria-label="System factor explorer">
+          <div class="explorer-controls">
+            <div>
+              <h3>Explore System Effects</h3>
+              <p>Toggle factors to see their directional effect on profit, recovery, bed occupancy, and medical capacity.</p>
+            </div>
+            <div class="toggle-grid">
+              <button class="factor-toggle" data-factor="acute-care" type="button" aria-pressed="false">Acute care discharge</button>
+              <button class="factor-toggle" data-factor="proximity" type="button" aria-pressed="false">Proximity</button>
+              <button class="factor-toggle" data-factor="insurance" type="button" aria-pressed="false">Insurance coverage</button>
+              <button class="factor-toggle" data-factor="referrals" type="button" aria-pressed="false">Referrals</button>
+              <button class="factor-toggle" data-factor="external-events" type="button" aria-pressed="false">External events</button>
+              <button class="factor-toggle" data-factor="staff-capacity" type="button" aria-pressed="false">Staff capacity</button>
+              <button class="factor-toggle" data-factor="severity" type="button" aria-pressed="false">Severity</button>
+              <button class="factor-toggle" data-factor="quality" type="button" aria-pressed="false">Quality</button>
+              <button class="factor-toggle" data-factor="beds" type="button" aria-pressed="false">Beds</button>
+              <button class="factor-toggle" data-factor="insurance-approval" type="button" aria-pressed="false">Insurance approval</button>
+              <button class="factor-toggle" data-factor="length-of-stay" type="button" aria-pressed="false">Length of stay</button>
+            </div>
+          </div>
+
+          <div class="system-meters">
+            <div class="meter">
+              <span>Profit</span>
+              <div class="meter-track"><i id="meterProfit"></i></div>
+              <strong id="scoreProfit">0</strong>
+            </div>
+            <div class="meter">
+              <span>Recovery rate</span>
+              <div class="meter-track"><i id="meterRecovery"></i></div>
+              <strong id="scoreRecovery">0</strong>
+            </div>
+            <div class="meter">
+              <span>Bed occupancy</span>
+              <div class="meter-track"><i id="meterOccupancy"></i></div>
+              <strong id="scoreOccupancy">0</strong>
+            </div>
+            <div class="meter">
+              <span>Medical capacity</span>
+              <div class="meter-track"><i id="meterCapacity"></i></div>
+              <strong id="scoreCapacity">0</strong>
+            </div>
+            <div class="meter">
+              <span>Throughput</span>
+              <div class="meter-track"><i id="meterThroughput"></i></div>
+              <strong id="scoreThroughput">0</strong>
+            </div>
+          </div>
+
+          <div class="scenario-summary" aria-live="polite">
+            <strong id="scenarioTitle">No factors active</strong>
+            <p id="scenarioText">Turn on one or more factors to explore how they push or relieve the AMRPA rehab hospital system.</p>
+          </div>
+        </div>
+
         <div class="vensim-wrap">
           <svg class="vensim-diagram" viewBox="0 0 1160 620" role="img" aria-labelledby="vensimTitle vensimDesc">
             <title id="vensimTitle">AMRPA rehab hospital Vensim-style stock and flow diagram</title>
@@ -277,61 +332,6 @@
           <span>Selected relationship</span>
           <strong id="diagramInsightTitle">Click a factor or loop</strong>
           <p id="diagramInsightText">Choose any item in the diagram to see how it affects patient flow through the AMRPA rehab hospital.</p>
-        </div>
-
-        <div class="explorer-panel" aria-label="System factor explorer">
-          <div class="explorer-controls">
-            <div>
-              <h3>Explore System Effects</h3>
-              <p>Toggle factors to see their directional effect on profit, recovery, bed occupancy, and medical capacity.</p>
-            </div>
-            <div class="toggle-grid">
-              <button class="factor-toggle" data-factor="acute-care" type="button" aria-pressed="false">Acute care discharge</button>
-              <button class="factor-toggle" data-factor="proximity" type="button" aria-pressed="false">Proximity</button>
-              <button class="factor-toggle" data-factor="insurance" type="button" aria-pressed="false">Insurance coverage</button>
-              <button class="factor-toggle" data-factor="referrals" type="button" aria-pressed="false">Referrals</button>
-              <button class="factor-toggle" data-factor="external-events" type="button" aria-pressed="false">External events</button>
-              <button class="factor-toggle" data-factor="staff-capacity" type="button" aria-pressed="false">Staff capacity</button>
-              <button class="factor-toggle" data-factor="severity" type="button" aria-pressed="false">Severity</button>
-              <button class="factor-toggle" data-factor="quality" type="button" aria-pressed="false">Quality</button>
-              <button class="factor-toggle" data-factor="beds" type="button" aria-pressed="false">Beds</button>
-              <button class="factor-toggle" data-factor="insurance-approval" type="button" aria-pressed="false">Insurance approval</button>
-              <button class="factor-toggle" data-factor="length-of-stay" type="button" aria-pressed="false">Length of stay</button>
-            </div>
-          </div>
-
-          <div class="system-meters">
-            <div class="meter">
-              <span>Profit</span>
-              <div class="meter-track"><i id="meterProfit"></i></div>
-              <strong id="scoreProfit">0</strong>
-            </div>
-            <div class="meter">
-              <span>Recovery rate</span>
-              <div class="meter-track"><i id="meterRecovery"></i></div>
-              <strong id="scoreRecovery">0</strong>
-            </div>
-            <div class="meter">
-              <span>Bed occupancy</span>
-              <div class="meter-track"><i id="meterOccupancy"></i></div>
-              <strong id="scoreOccupancy">0</strong>
-            </div>
-            <div class="meter">
-              <span>Medical capacity</span>
-              <div class="meter-track"><i id="meterCapacity"></i></div>
-              <strong id="scoreCapacity">0</strong>
-            </div>
-            <div class="meter">
-              <span>Throughput</span>
-              <div class="meter-track"><i id="meterThroughput"></i></div>
-              <strong id="scoreThroughput">0</strong>
-            </div>
-          </div>
-
-          <div class="scenario-summary" aria-live="polite">
-            <strong id="scenarioTitle">No factors active</strong>
-            <p id="scenarioText">Turn on one or more factors to explore how they push or relieve the AMRPA rehab hospital system.</p>
-          </div>
         </div>
 
         <div class="causal-loops">
