@@ -11,10 +11,10 @@ const outputs = {
 };
 
 const metrics = {
-  satisfaction: document.querySelector("#satisfaction"),
-  lengthOfStay: document.querySelector("#lengthOfStay"),
-  utilization: document.querySelector("#utilization"),
-  readmission: document.querySelector("#readmission")
+  profit: document.querySelector("#profit"),
+  recoveryRate: document.querySelector("#recoveryRate"),
+  bedOccupancy: document.querySelector("#bedOccupancy"),
+  medicalCapacity: document.querySelector("#medicalCapacity")
 };
 
 function clamp(value, min, max) {
@@ -34,15 +34,15 @@ function updateDashboard() {
   const demandPenalty = Math.max(0, demandPressure - 100) * 0.12;
   const underSpecializedPenalty = Math.max(0, complexityMix - specialistShare) * 0.08;
 
-  const satisfaction = clamp(72 + matchQuality * 0.22 - demandPenalty, 55, 96);
-  const lengthOfStay = clamp(15.8 - matchQuality * 0.045 + demandPressure * 0.012, 9.8, 18.5);
-  const utilization = clamp(62 + demandPressure * 0.23 - specialistShare * 0.05, 55, 96);
-  const readmission = clamp(5.2 + underSpecializedPenalty + (100 - matchQuality) * 0.045, 3.8, 13.5);
+  const recoveryRate = clamp(66 + matchQuality * 0.2 - underSpecializedPenalty - demandPenalty * 0.35, 48, 94);
+  const bedOccupancy = clamp(58 + demandPressure * 0.22 + complexityMix * 0.15 - specialistShare * 0.04, 45, 98);
+  const medicalCapacity = clamp(88 - Math.max(0, demandPressure - 100) * 0.18 - complexityMix * 0.12 + specialistShare * 0.1, 45, 96);
+  const profit = clamp(1.1 + recoveryRate * 0.035 + bedOccupancy * 0.018 - Math.max(0, bedOccupancy - 90) * 0.09 - demandPenalty * 0.018, 0.2, 6.8);
 
-  metrics.satisfaction.textContent = Math.round(satisfaction);
-  metrics.lengthOfStay.textContent = lengthOfStay.toFixed(1);
-  metrics.utilization.textContent = `${Math.round(utilization)}%`;
-  metrics.readmission.textContent = `${readmission.toFixed(1)}%`;
+  metrics.profit.textContent = `$${profit.toFixed(1)}M`;
+  metrics.recoveryRate.textContent = `${Math.round(recoveryRate)}%`;
+  metrics.bedOccupancy.textContent = `${Math.round(bedOccupancy)}%`;
+  metrics.medicalCapacity.textContent = `${Math.round(medicalCapacity)}%`;
 }
 
 Object.values(sliders).forEach((slider) => {
@@ -82,7 +82,7 @@ const diagramInsights = {
   },
   quality: {
     title: "Quality -> Outcomes and referrals",
-    text: "Higher quality improves functional outcomes, patient satisfaction, and discharge reliability, which can strengthen referrals back into patient-in."
+    text: "Higher quality improves functional recovery, discharge reliability, and referral strength, which can improve profit and patient-in demand."
   },
   beds: {
     title: "Beds -> Admission capacity",
@@ -102,7 +102,7 @@ const diagramInsights = {
   },
   "quality-loop": {
     title: "Quality loop",
-    text: "Quality improves outcomes and satisfaction. Better outcomes support referrals, which raises patient-in demand and makes quality a growth lever."
+    text: "Quality improves recovery outcomes. Better outcomes support referrals, which raises patient-in demand and makes quality a growth lever."
   },
   "insurance-loop": {
     title: "Insurance loop",
@@ -121,18 +121,18 @@ const insightTitle = document.querySelector("#diagramInsightTitle");
 const insightText = document.querySelector("#diagramInsightText");
 const factorToggles = Array.from(document.querySelectorAll(".factor-toggle"));
 const systemScores = {
-  patientIn: document.querySelector("#scorePatientIn"),
+  profit: document.querySelector("#scoreProfit"),
+  recovery: document.querySelector("#scoreRecovery"),
+  occupancy: document.querySelector("#scoreOccupancy"),
   capacity: document.querySelector("#scoreCapacity"),
-  los: document.querySelector("#scoreLos"),
-  patientOut: document.querySelector("#scorePatientOut"),
-  satisfaction: document.querySelector("#scoreSatisfaction")
+  throughput: document.querySelector("#scoreThroughput")
 };
 const systemMeters = {
-  patientIn: document.querySelector("#meterPatientIn"),
+  profit: document.querySelector("#meterProfit"),
+  recovery: document.querySelector("#meterRecovery"),
+  occupancy: document.querySelector("#meterOccupancy"),
   capacity: document.querySelector("#meterCapacity"),
-  los: document.querySelector("#meterLos"),
-  patientOut: document.querySelector("#meterPatientOut"),
-  satisfaction: document.querySelector("#meterSatisfaction")
+  throughput: document.querySelector("#meterThroughput")
 };
 const scenarioTitle = document.querySelector("#scenarioTitle");
 const scenarioText = document.querySelector("#scenarioText");
@@ -141,68 +141,68 @@ const factorEffects = {
   "acute-care": {
     label: "Acute care discharge",
     targets: ["patient-in"],
-    scores: { patientIn: 18, capacity: 8, los: 4, patientOut: 3, satisfaction: -2 },
-    summary: "raises admission demand and can strain capacity if beds and staff are not ready"
+    scores: { profit: 5, recovery: -1, occupancy: 16, capacity: -6, throughput: 5 },
+    summary: "raises patient volume, increasing occupancy and revenue opportunity while stressing medical capacity"
   },
   proximity: {
     label: "Proximity",
     targets: ["patient-in"],
-    scores: { patientIn: 10, capacity: 2, los: -1, patientOut: 2, satisfaction: 5 },
-    summary: "improves access and family support, modestly improving flow and satisfaction"
+    scores: { profit: 3, recovery: 4, occupancy: 6, capacity: 1, throughput: 3 },
+    summary: "improves access and support, modestly improving recovery and throughput"
   },
   insurance: {
     label: "Insurance coverage",
     targets: ["patient-in", "insurance-approval"],
-    scores: { patientIn: 12, capacity: 3, los: -2, patientOut: 4, satisfaction: 4 },
-    summary: "improves eligibility for entry and lowers financial friction"
+    scores: { profit: 10, recovery: 2, occupancy: 7, capacity: 2, throughput: 4 },
+    summary: "improves reimbursement feasibility and eligibility for admission"
   },
   referrals: {
     label: "Referrals",
     targets: ["patient-in", "quality"],
-    scores: { patientIn: 15, capacity: 5, los: 1, patientOut: 3, satisfaction: 3 },
-    summary: "expands patient-in volume and reinforces the quality-referral loop"
+    scores: { profit: 8, recovery: 3, occupancy: 12, capacity: -3, throughput: 5 },
+    summary: "expands patient volume and reinforces the quality-referral loop"
   },
   "external-events": {
     label: "External events",
     targets: ["patient-in", "beds", "staff-capacity"],
-    scores: { patientIn: 20, capacity: 15, los: 8, patientOut: -5, satisfaction: -6 },
-    summary: "creates demand shocks that raise occupancy and can slow patient-out flow"
+    scores: { profit: -4, recovery: -6, occupancy: 18, capacity: -14, throughput: -5 },
+    summary: "creates demand shocks that raise bed occupancy and reduce available medical capacity"
   },
   "staff-capacity": {
     label: "Staff capacity",
     targets: ["amrpa-hospital", "patient-out", "length-of-stay"],
-    scores: { patientIn: 4, capacity: -16, los: -10, patientOut: 16, satisfaction: 9 },
-    summary: "relieves bottlenecks by improving therapy throughput and discharge readiness"
+    scores: { profit: 6, recovery: 9, occupancy: -4, capacity: 18, throughput: 16 },
+    summary: "raises medical capacity by improving staff availability, therapy delivery, and throughput"
   },
   severity: {
     label: "Severity",
     targets: ["amrpa-hospital", "length-of-stay", "staff-capacity"],
-    scores: { patientIn: 2, capacity: 14, los: 14, patientOut: -9, satisfaction: -6 },
-    summary: "increases resource intensity and length of stay, slowing discharge flow"
+    scores: { profit: -6, recovery: -8, occupancy: 10, capacity: -12, throughput: -9 },
+    summary: "increases resource intensity, lowering throughput and recovery unless capacity rises"
   },
   quality: {
     label: "Quality",
     targets: ["amrpa-hospital", "referrals", "patient-out"],
-    scores: { patientIn: 6, capacity: -5, los: -6, patientOut: 12, satisfaction: 16 },
-    summary: "improves outcomes, referrals, patient-out reliability, and satisfaction"
+    scores: { profit: 9, recovery: 16, occupancy: -3, capacity: 4, throughput: 8 },
+    summary: "improves recovery rate, reputation, referrals, and discharge reliability"
   },
   beds: {
     label: "Beds",
     targets: ["amrpa-hospital", "patient-in", "length-of-stay"],
-    scores: { patientIn: 8, capacity: -14, los: -4, patientOut: 6, satisfaction: 4 },
-    summary: "adds physical capacity, reducing admission blocks and occupancy strain"
+    scores: { profit: 5, recovery: 2, occupancy: -10, capacity: 10, throughput: 6 },
+    summary: "adds physical capacity, reducing bed gridlock and supporting more throughput"
   },
   "insurance-approval": {
     label: "Insurance approval",
     targets: ["patient-in", "amrpa-hospital", "patient-out"],
-    scores: { patientIn: 10, capacity: -4, los: -8, patientOut: 10, satisfaction: 7 },
-    summary: "speeds movement into and through the rehab stay by reducing authorization delays"
+    scores: { profit: 7, recovery: 3, occupancy: -2, capacity: 6, throughput: 10 },
+    summary: "reduces authorization delays, improving patient throughput and financial predictability"
   },
   "length-of-stay": {
     label: "Length of stay",
     targets: ["amrpa-hospital", "beds", "patient-out"],
-    scores: { patientIn: -5, capacity: 12, los: 18, patientOut: -12, satisfaction: -5 },
-    summary: "keeps patients in the stock longer, using beds and slowing patient-out"
+    scores: { profit: -8, recovery: 1, occupancy: 15, capacity: -12, throughput: -14 },
+    summary: "keeps patients in beds longer, increasing occupancy while lowering medical capacity and throughput"
   }
 };
 
@@ -261,7 +261,7 @@ function updateMeter(key, value) {
 
 function updateExplorer() {
   const active = activeFactorIds();
-  const totals = { patientIn: 0, capacity: 0, los: 0, patientOut: 0, satisfaction: 0 };
+  const totals = { profit: 0, recovery: 0, occupancy: 0, capacity: 0, throughput: 0 };
   const relatedIds = new Set();
   const summaries = [];
 

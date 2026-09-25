@@ -21,7 +21,7 @@
           <h2>Project Objective</h2>
           <p>
             Build an interactive operations model that helps rehab hospitals compare care delivery
-            models, improve patient satisfaction, and strengthen operational effectiveness.
+            models, improve recovery performance, and strengthen financial and operational effectiveness.
           </p>
         </div>
         <div class="recommendation">
@@ -33,24 +33,24 @@
 
       <section class="kpi-grid" aria-label="Key performance indicators">
         <article class="kpi">
-          <span>Patient Satisfaction</span>
-          <strong id="satisfaction">87</strong>
-          <small>Target: 90+</small>
+          <span>Profit</span>
+          <strong id="profit">$2.4M</strong>
+          <small>Target: positive margin growth</small>
         </article>
         <article class="kpi">
-          <span>Avg. Length of Stay</span>
-          <strong id="lengthOfStay">13.2</strong>
-          <small>Target: 12.5 days</small>
+          <span>Recovery Rate</span>
+          <strong id="recoveryRate">82%</strong>
+          <small>Target: 85%+</small>
         </article>
         <article class="kpi">
-          <span>Therapist Utilization</span>
-          <strong id="utilization">81%</strong>
-          <small>Target: 78-85%</small>
+          <span>Bed Occupancy</span>
+          <strong id="bedOccupancy">84%</strong>
+          <small>Target: 82-90%</small>
         </article>
         <article class="kpi">
-          <span>Readmission Rate</span>
-          <strong id="readmission">8.4%</strong>
-          <small>Target: under 7%</small>
+          <span>Medical Capacity</span>
+          <strong id="medicalCapacity">78%</strong>
+          <small>Throughput and staff availability</small>
         </article>
       </section>
 
@@ -80,7 +80,7 @@
             <li><strong>Patients and families</strong><span>Recovery quality, wait time, communication, safe discharge</span></li>
             <li><strong>Clinicians</strong><span>Right patient-provider match, workload balance, outcomes</span></li>
             <li><strong>Operations leaders</strong><span>Throughput, staffing efficiency, bed utilization, cost per case</span></li>
-            <li><strong>Payers</strong><span>Value, appropriate length of stay, lower readmissions</span></li>
+            <li><strong>Payers</strong><span>Value, appropriate length of stay, strong recovery, lower avoidable returns</span></li>
             <li><strong>AMRPA members</strong><span>Repeatable scenario tool and clear recommendations</span></li>
           </ul>
         </div>
@@ -212,7 +212,7 @@
           <div class="explorer-controls">
             <div>
               <h3>Explore System Effects</h3>
-              <p>Toggle factors to see their directional effect across patient-in, capacity, length of stay, patient-out, and satisfaction.</p>
+              <p>Toggle factors to see their directional effect on profit, recovery, bed occupancy, and medical capacity.</p>
             </div>
             <div class="toggle-grid">
               <button class="factor-toggle" data-factor="acute-care" type="button" aria-pressed="false">Acute care discharge</button>
@@ -231,29 +231,29 @@
 
           <div class="system-meters">
             <div class="meter">
-              <span>Patient-in pressure</span>
-              <div class="meter-track"><i id="meterPatientIn"></i></div>
-              <strong id="scorePatientIn">0</strong>
+              <span>Profit</span>
+              <div class="meter-track"><i id="meterProfit"></i></div>
+              <strong id="scoreProfit">0</strong>
             </div>
             <div class="meter">
-              <span>Capacity strain</span>
+              <span>Recovery rate</span>
+              <div class="meter-track"><i id="meterRecovery"></i></div>
+              <strong id="scoreRecovery">0</strong>
+            </div>
+            <div class="meter">
+              <span>Bed occupancy</span>
+              <div class="meter-track"><i id="meterOccupancy"></i></div>
+              <strong id="scoreOccupancy">0</strong>
+            </div>
+            <div class="meter">
+              <span>Medical capacity</span>
               <div class="meter-track"><i id="meterCapacity"></i></div>
               <strong id="scoreCapacity">0</strong>
             </div>
             <div class="meter">
-              <span>Length of stay pressure</span>
-              <div class="meter-track"><i id="meterLos"></i></div>
-              <strong id="scoreLos">0</strong>
-            </div>
-            <div class="meter">
-              <span>Patient-out flow</span>
-              <div class="meter-track"><i id="meterPatientOut"></i></div>
-              <strong id="scorePatientOut">0</strong>
-            </div>
-            <div class="meter">
-              <span>Satisfaction / value</span>
-              <div class="meter-track"><i id="meterSatisfaction"></i></div>
-              <strong id="scoreSatisfaction">0</strong>
+              <span>Throughput</span>
+              <div class="meter-track"><i id="meterThroughput"></i></div>
+              <strong id="scoreThroughput">0</strong>
             </div>
           </div>
 
@@ -270,7 +270,7 @@
           </button>
           <button class="diagram-node" data-node="quality-loop" data-targets="quality patient-out referrals patient-in">
             <strong>Quality loop</strong>
-            <span>Higher care quality improves outcomes and patient satisfaction, strengthening referrals and future patient-in demand.</span>
+            <span>Higher care quality improves recovery outcomes, strengthening referrals and future patient-in demand.</span>
           </button>
           <button class="diagram-node" data-node="insurance-loop" data-targets="insurance insurance-approval patient-in patient-out">
             <strong>Insurance loop</strong>
@@ -286,12 +286,11 @@
       <section class="panel">
         <h2>Success KPI Framework</h2>
         <div class="metric-table">
-          <div class="row header"><span>KPI</span><span>Why it matters</span><span>Target logic</span></div>
-          <div class="row"><span>Patient satisfaction</span><span>Captures experience and perceived value</span><span>Increase without harming access</span></div>
-          <div class="row"><span>Functional improvement</span><span>Measures clinical progress during stay</span><span>Improve per patient episode</span></div>
-          <div class="row"><span>Length of stay</span><span>Balances recovery time and capacity</span><span>Reduce only when outcomes hold</span></div>
-          <div class="row"><span>Utilization</span><span>Shows staffing efficiency and bottlenecks</span><span>Keep in productive range</span></div>
-          <div class="row"><span>Readmissions</span><span>Flags discharge quality and care mismatch</span><span>Lower through better match quality</span></div>
+          <div class="row header"><span>KPI</span><span>Why it matters</span><span>How to gauge performance</span></div>
+          <div class="row"><span>Profit</span><span>Shows whether the rehab operating model creates sustainable financial value</span><span>Net margin, contribution per case, reimbursement minus cost per stay</span></div>
+          <div class="row"><span>Recovery rate</span><span>Measures how effectively AMRPA improves patient condition during the rehab stay</span><span>Functional improvement, discharge-to-community rate, avoided return visits</span></div>
+          <div class="row"><span>Bed occupancy</span><span>Shows whether physical capacity is underused, balanced, or overloaded</span><span>Occupied beds divided by available beds; target high but not gridlocked</span></div>
+          <div class="row"><span>Medical capacity</span><span>Captures the system's ability to move patients through care safely</span><span>Patient throughput, staff availability, therapy hours, clinician utilization</span></div>
         </div>
       </section>
 
