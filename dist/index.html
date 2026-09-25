@@ -89,62 +89,81 @@
       <section class="panel process-section" aria-label="Patient process map">
         <div class="section-heading">
           <div>
-            <h2>Patient Process Map</h2>
-            <p>Core flow for the rehab hospital model, from patient-in to patient-out.</p>
+            <h2>Stock and Flow Diagram</h2>
+            <p>AMRPA rehab hospital flow from patient-in to patient-out, with key demand and capacity drivers.</p>
           </div>
-          <span class="flow-tag">Stock and flow view</span>
+          <span class="flow-tag">Causal loop view</span>
         </div>
-        <div class="process-map">
-          <div class="process-step endpoint">
-            <span>Start</span>
+
+        <div class="systems-diagram">
+          <div class="factor-bank inflow-factors">
+            <span>Factors affecting patient-in</span>
+            <ul>
+              <li>Acute care discharge</li>
+              <li>Proximity to AMRPA rehab hospital</li>
+              <li>Insurance coverage</li>
+              <li>Physician and hospital referrals</li>
+              <li>External events and demand shocks</li>
+            </ul>
+          </div>
+
+          <div class="flow-stage endpoint">
+            <span>Inflow</span>
             <strong>Patient In</strong>
-            <small>Referral or admission request enters the system</small>
+            <small>Eligible rehab patients enter through referrals, discharge planning, and payer authorization.</small>
           </div>
-          <div class="flow-arrow" aria-hidden="true"></div>
-          <div class="process-step">
-            <span>Step 1</span>
-            <strong>Intake and Triage</strong>
-            <small>Assess diagnosis, acuity, complexity, payer, and bed availability</small>
+
+          <div class="wide-flow-arrow" aria-hidden="true"></div>
+
+          <div class="hospital-stock">
+            <span>Stock / Work-in-process</span>
+            <strong>AMRPA Rehab Hospital</strong>
+            <small>Patients receiving inpatient rehabilitation services before discharge.</small>
+            <div class="process-factors">
+              <div><strong>Staff capacity</strong><small>Clinician availability and utilization</small></div>
+              <div><strong>Severity</strong><small>Patient complexity and care intensity</small></div>
+              <div><strong>Quality</strong><small>Care coordination and functional improvement</small></div>
+              <div><strong>Beds</strong><small>Physical capacity and occupancy</small></div>
+              <div><strong>Insurance approval</strong><small>Authorization speed and coverage limits</small></div>
+              <div><strong>Length of stay</strong><small>Time patients remain in the system</small></div>
+            </div>
           </div>
-          <div class="flow-arrow" aria-hidden="true"></div>
-          <div class="process-step">
-            <span>Step 2</span>
-            <strong>Care Model Match</strong>
-            <small>Assign generalist, specialist, or hybrid care pathway</small>
-          </div>
-          <div class="flow-arrow" aria-hidden="true"></div>
-          <div class="process-step">
-            <span>Step 3</span>
-            <strong>Therapy Delivery</strong>
-            <small>Coordinate physician, nursing, therapy, and case management work</small>
-          </div>
-          <div class="flow-arrow" aria-hidden="true"></div>
-          <div class="process-step">
-            <span>Step 4</span>
-            <strong>Progress Review</strong>
-            <small>Monitor functional improvement, barriers, delays, and satisfaction</small>
-          </div>
-          <div class="flow-arrow" aria-hidden="true"></div>
-          <div class="process-step">
-            <span>Step 5</span>
-            <strong>Discharge Planning</strong>
-            <small>Prepare family, home services, follow-up, and payer documentation</small>
-          </div>
-          <div class="flow-arrow" aria-hidden="true"></div>
-          <div class="process-step endpoint">
-            <span>End</span>
+
+          <div class="wide-flow-arrow" aria-hidden="true"></div>
+
+          <div class="flow-stage endpoint">
+            <span>Outflow</span>
             <strong>Patient Out</strong>
-            <small>Safe discharge, community transition, or next-care placement</small>
+            <small>Patient exits through safe discharge, transfer, or next-care placement.</small>
+          </div>
+
+          <div class="factor-bank outflow-factors">
+            <span>Patient-out conditions</span>
+            <ul>
+              <li>Discharge readiness</li>
+              <li>Functional improvement</li>
+              <li>Caregiver and home support</li>
+              <li>Post-acute follow-up plan</li>
+            </ul>
           </div>
         </div>
-        <div class="feedback-loops">
+
+        <div class="causal-loops">
           <div>
-            <strong>Operational feedback</strong>
-            <span>Wait time, utilization, bed capacity, and staffing pressure feed back into intake decisions.</span>
+            <strong>Capacity loop</strong>
+            <span>More patient-in volume raises occupancy, which strains beds and staff capacity, increasing length of stay and slowing future admissions.</span>
           </div>
           <div>
-            <strong>Clinical feedback</strong>
-            <span>Functional improvement, readmissions, and satisfaction refine the care model match.</span>
+            <strong>Quality loop</strong>
+            <span>Higher care quality improves outcomes and patient satisfaction, strengthening referrals and future patient-in demand.</span>
+          </div>
+          <div>
+            <strong>Insurance loop</strong>
+            <span>Faster insurance approval reduces admission delays and discharge friction, improving flow from patient-in to patient-out.</span>
+          </div>
+          <div>
+            <strong>Severity loop</strong>
+            <span>Higher severity increases resource needs and length of stay, reducing available capacity unless staffing or beds increase.</span>
           </div>
         </div>
       </section>
