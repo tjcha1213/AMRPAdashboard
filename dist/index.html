@@ -124,6 +124,20 @@
           </label>
         </div>
 
+        <div class="panel data-upload">
+          <h2>Client Data Input</h2>
+          <p>Upload a CSV or JSON file to recalibrate the model baseline. Recognized fields include profit, patient satisfaction, recovery rate, bed occupancy, medical capacity, specialist share, case mix, and demand pressure.</p>
+          <label class="file-slot" for="clientDataFile">
+            <span>Upload client data file</span>
+            <input id="clientDataFile" type="file" accept=".csv,.json,application/json,text/csv">
+          </label>
+          <div class="upload-status" aria-live="polite">
+            <strong id="uploadStatusTitle">No file loaded</strong>
+            <p id="uploadStatusText">The dashboard is currently using modeled assumptions.</p>
+          </div>
+          <div id="detectedFields" class="detected-fields" aria-label="Detected uploaded fields"></div>
+        </div>
+
         <div class="panel">
           <h2>Stakeholder Map</h2>
           <ul class="stakeholders">

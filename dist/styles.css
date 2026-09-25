@@ -77,7 +77,7 @@ main {
 .summary,
 .workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+  grid-template-columns: minmax(240px, 0.85fr) minmax(280px, 1fr) minmax(260px, 0.85fr);
   gap: 18px;
 }
 
@@ -259,6 +259,60 @@ input[type="range"] {
 output {
   color: var(--blue);
   font-weight: 800;
+}
+
+.data-upload p {
+  color: var(--muted);
+}
+
+.file-slot {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px dashed rgba(49, 95, 145, 0.55);
+  border-radius: 8px;
+  background: var(--soft-blue);
+  cursor: pointer;
+}
+
+.file-slot span {
+  color: var(--blue);
+  font-weight: 800;
+}
+
+.file-slot input {
+  width: 100%;
+}
+
+.upload-status {
+  display: grid;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 12px;
+  border-left: 4px solid var(--gold);
+  background: var(--soft-gold);
+}
+
+.upload-status p {
+  margin-bottom: 0;
+}
+
+.detected-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.detected-fields span {
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .stakeholders {

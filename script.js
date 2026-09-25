@@ -22,6 +22,10 @@ const tradeoffPointLabel = document.querySelector("#tradeoffPointLabel");
 const graphProfit = document.querySelector("#graphProfit");
 const graphSatisfaction = document.querySelector("#graphSatisfaction");
 const tradeoffNarrative = document.querySelector("#tradeoffNarrative");
+const clientDataFile = document.querySelector("#clientDataFile");
+const uploadStatusTitle = document.querySelector("#uploadStatusTitle");
+const uploadStatusText = document.querySelector("#uploadStatusText");
+const detectedFields = document.querySelector("#detectedFields");
 
 let basePerformance = {
   profit: 0,
@@ -30,6 +34,8 @@ let basePerformance = {
   capacity: 0,
   satisfaction: 0
 };
+
+let uploadedPerformance = {};
 
 let explorerTotals = {
   profit: 0,
@@ -42,6 +48,90 @@ let explorerTotals = {
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
+}
+
+function firstNumeric(data, aliases) {
+  for (const alias of aliases) {
+    if (Object.prototype.hasOwnProperty.call(data, alias)) {
+      const value = Number(String(data[alias]).replace(/[$,%]/g, ""));
+      if (Number.isFinite(value)) return value;
+    }
+  }
+  return null;
+}
+
+function normalizeKey(key) {
+  return key.trim().toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+}
+
+function parseCsv(text) {
+  const lines = text.trim().split(/\r?\n/).filter(Boolean);
+  if (lines.length < 2) return {};
+  const headers = lines[0].split(",").map(normalizeKey);
+  const sums = {};
+  const counts = {};
+
+  lines.slice(1).forEach((line) => {
+    line.split(",").forEach((rawValue, index) => {
+      const key = headers[index];
+      const value = Number(rawValue.trim().replace(/[$,%]/g, ""));
+      if (key && Number.isFinite(value)) {
+        sums[key] = (sums[key] || 0) + value;
+        counts[key] = (counts[key] || 0) + 1;
+      }
+    });
+  });
+
+  return Object.fromEntries(Object.keys(sums).map((key) => [key, sums[key] / counts[key]]));
+}
+
+function parseClientData(text, fileName) {
+  if (fileName.toLowerCase().endsWith(".json")) {
+    const parsed = JSON.parse(text);
+    const source = Array.isArray(parsed) ? parsed[0] : parsed;
+    return Object.fromEntries(Object.entries(source).map(([key, value]) => [normalizeKey(key), value]));
+  }
+  return parseCsv(text);
+}
+
+function applyClientData(data, fileName) {
+  const sliderMappings = [
+    { key: "specialistShare", aliases: ["specialist_share", "specialists", "specialist_percent"] },
+    { key: "complexityMix", aliases: ["complexity_mix", "high_complexity_case_mix", "case_complexity", "severity_mix"] },
+    { key: "demandPressure", aliases: ["demand_pressure", "demand", "patient_demand", "arrival_pressure"] }
+  ];
+  const metricMappings = {
+    profit: ["profit", "net_profit", "margin", "operating_profit"],
+    recovery: ["recovery", "recovery_rate", "functional_improvement", "outcome_rate"],
+    occupancy: ["bed_occupancy", "occupancy", "beds_occupied"],
+    capacity: ["medical_capacity", "capacity", "staff_availability", "staff_capacity"],
+    satisfaction: ["patient_satisfaction", "satisfaction", "experience_score", "patient_experience"]
+  };
+  const applied = [];
+
+  sliderMappings.forEach((mapping) => {
+    const value = firstNumeric(data, mapping.aliases);
+    if (value !== null) {
+      sliders[mapping.key].value = clamp(value, Number(sliders[mapping.key].min), Number(sliders[mapping.key].max));
+      applied.push(mapping.aliases[0]);
+    }
+  });
+
+  uploadedPerformance = {};
+  Object.entries(metricMappings).forEach(([key, aliases]) => {
+    const value = firstNumeric(data, aliases);
+    if (value !== null) {
+      uploadedPerformance[key] = key === "profit" && value > 20 ? value / 1000000 : value;
+      applied.push(aliases[0]);
+    }
+  });
+
+  updateDashboard();
+  uploadStatusTitle.textContent = applied.length ? `Loaded ${fileName}` : `No usable fields found in ${fileName}`;
+  uploadStatusText.textContent = applied.length
+    ? "The model baseline has been recalibrated using the detected client data fields."
+    : "Use column names such as profit, patient_satisfaction, recovery_rate, bed_occupancy, medical_capacity, specialist_share, complexity_mix, or demand_pressure.";
+  detectedFields.innerHTML = applied.map((field) => `<span>${field}</span>`).join("");
 }
 
 function refreshPerformance() {
@@ -100,11 +190,11 @@ function updateDashboard() {
   const satisfaction = clamp(48 + recoveryRate * 0.42 + medicalCapacity * 0.12 - Math.max(0, bedOccupancy - 90) * 0.85 - demandPenalty * 0.45, 45, 98);
 
   basePerformance = {
-    profit,
-    recovery: recoveryRate,
-    occupancy: bedOccupancy,
-    capacity: medicalCapacity,
-    satisfaction
+    profit: uploadedPerformance.profit ?? profit,
+    recovery: uploadedPerformance.recovery ?? recoveryRate,
+    occupancy: uploadedPerformance.occupancy ?? bedOccupancy,
+    capacity: uploadedPerformance.capacity ?? medicalCapacity,
+    satisfaction: uploadedPerformance.satisfaction ?? satisfaction
   };
 
   refreshPerformance();
@@ -113,6 +203,22 @@ function updateDashboard() {
 Object.values(sliders).forEach((slider) => {
   slider.addEventListener("input", updateDashboard);
 });
+
+if (clientDataFile) {
+  clientDataFile.addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const data = parseClientData(text, file.name);
+      applyClientData(data, file.name);
+    } catch (error) {
+      uploadStatusTitle.textContent = "Could not read file";
+      uploadStatusText.textContent = "Please upload a simple CSV or JSON file with numeric KPI fields.";
+      detectedFields.innerHTML = "";
+    }
+  });
+}
 
 updateDashboard();
 
