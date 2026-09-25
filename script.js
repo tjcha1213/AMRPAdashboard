@@ -119,23 +119,99 @@ const diagramTargets = Array.from(document.querySelectorAll("[data-node]"));
 const causalLinks = Array.from(document.querySelectorAll(".causal-link"));
 const insightTitle = document.querySelector("#diagramInsightTitle");
 const insightText = document.querySelector("#diagramInsightText");
+const factorToggles = Array.from(document.querySelectorAll(".factor-toggle"));
+const systemScores = {
+  patientIn: document.querySelector("#scorePatientIn"),
+  capacity: document.querySelector("#scoreCapacity"),
+  los: document.querySelector("#scoreLos"),
+  patientOut: document.querySelector("#scorePatientOut"),
+  satisfaction: document.querySelector("#scoreSatisfaction")
+};
+const systemMeters = {
+  patientIn: document.querySelector("#meterPatientIn"),
+  capacity: document.querySelector("#meterCapacity"),
+  los: document.querySelector("#meterLos"),
+  patientOut: document.querySelector("#meterPatientOut"),
+  satisfaction: document.querySelector("#meterSatisfaction")
+};
+const scenarioTitle = document.querySelector("#scenarioTitle");
+const scenarioText = document.querySelector("#scenarioText");
+
+const factorEffects = {
+  "acute-care": {
+    label: "Acute care discharge",
+    targets: ["patient-in"],
+    scores: { patientIn: 18, capacity: 8, los: 4, patientOut: 3, satisfaction: -2 },
+    summary: "raises admission demand and can strain capacity if beds and staff are not ready"
+  },
+  proximity: {
+    label: "Proximity",
+    targets: ["patient-in"],
+    scores: { patientIn: 10, capacity: 2, los: -1, patientOut: 2, satisfaction: 5 },
+    summary: "improves access and family support, modestly improving flow and satisfaction"
+  },
+  insurance: {
+    label: "Insurance coverage",
+    targets: ["patient-in", "insurance-approval"],
+    scores: { patientIn: 12, capacity: 3, los: -2, patientOut: 4, satisfaction: 4 },
+    summary: "improves eligibility for entry and lowers financial friction"
+  },
+  referrals: {
+    label: "Referrals",
+    targets: ["patient-in", "quality"],
+    scores: { patientIn: 15, capacity: 5, los: 1, patientOut: 3, satisfaction: 3 },
+    summary: "expands patient-in volume and reinforces the quality-referral loop"
+  },
+  "external-events": {
+    label: "External events",
+    targets: ["patient-in", "beds", "staff-capacity"],
+    scores: { patientIn: 20, capacity: 15, los: 8, patientOut: -5, satisfaction: -6 },
+    summary: "creates demand shocks that raise occupancy and can slow patient-out flow"
+  },
+  "staff-capacity": {
+    label: "Staff capacity",
+    targets: ["amrpa-hospital", "patient-out", "length-of-stay"],
+    scores: { patientIn: 4, capacity: -16, los: -10, patientOut: 16, satisfaction: 9 },
+    summary: "relieves bottlenecks by improving therapy throughput and discharge readiness"
+  },
+  severity: {
+    label: "Severity",
+    targets: ["amrpa-hospital", "length-of-stay", "staff-capacity"],
+    scores: { patientIn: 2, capacity: 14, los: 14, patientOut: -9, satisfaction: -6 },
+    summary: "increases resource intensity and length of stay, slowing discharge flow"
+  },
+  quality: {
+    label: "Quality",
+    targets: ["amrpa-hospital", "referrals", "patient-out"],
+    scores: { patientIn: 6, capacity: -5, los: -6, patientOut: 12, satisfaction: 16 },
+    summary: "improves outcomes, referrals, patient-out reliability, and satisfaction"
+  },
+  beds: {
+    label: "Beds",
+    targets: ["amrpa-hospital", "patient-in", "length-of-stay"],
+    scores: { patientIn: 8, capacity: -14, los: -4, patientOut: 6, satisfaction: 4 },
+    summary: "adds physical capacity, reducing admission blocks and occupancy strain"
+  },
+  "insurance-approval": {
+    label: "Insurance approval",
+    targets: ["patient-in", "amrpa-hospital", "patient-out"],
+    scores: { patientIn: 10, capacity: -4, los: -8, patientOut: 10, satisfaction: 7 },
+    summary: "speeds movement into and through the rehab stay by reducing authorization delays"
+  },
+  "length-of-stay": {
+    label: "Length of stay",
+    targets: ["amrpa-hospital", "beds", "patient-out"],
+    scores: { patientIn: -5, capacity: 12, los: 18, patientOut: -12, satisfaction: -5 },
+    summary: "keeps patients in the stock longer, using beds and slowing patient-out"
+  }
+};
 
 function activateDiagramNode(node) {
   const nodeId = node.dataset.node;
   const relatedIds = new Set((node.dataset.targets || "").split(" ").filter(Boolean));
   relatedIds.add(nodeId);
 
-  diagramTargets.forEach((target) => {
-    const isRelated = relatedIds.has(target.dataset.node);
-    target.classList.toggle("is-active", isRelated);
-    target.classList.toggle("is-selected", target === node);
-  });
-
-  causalLinks.forEach((link) => {
-    const linkIds = (link.dataset.link || "").split(" ").filter(Boolean);
-    const isRelated = linkIds.some((id) => relatedIds.has(id));
-    link.classList.toggle("is-active", isRelated);
-  });
+  renderDiagramHighlights(relatedIds, node);
 
   const insight = diagramInsights[nodeId];
   if (insight) {
@@ -153,3 +229,77 @@ diagramNodes.forEach((node) => {
     }
   });
 });
+
+function activeFactorIds() {
+  return factorToggles
+    .filter((toggle) => toggle.getAttribute("aria-pressed") === "true")
+    .map((toggle) => toggle.dataset.factor);
+}
+
+function renderDiagramHighlights(relatedIds, selectedNode = null) {
+  diagramTargets.forEach((target) => {
+    const isRelated = relatedIds.has(target.dataset.node);
+    target.classList.toggle("is-active", isRelated);
+    target.classList.toggle("is-selected", target === selectedNode);
+  });
+
+  causalLinks.forEach((link) => {
+    const linkIds = (link.dataset.link || "").split(" ").filter(Boolean);
+    const isRelated = linkIds.some((id) => relatedIds.has(id));
+    link.classList.toggle("is-active", isRelated);
+  });
+}
+
+function updateMeter(key, value) {
+  const score = clamp(value, -40, 40);
+  const width = 50 + score * 1.25;
+  systemScores[key].textContent = score > 0 ? `+${score}` : String(score);
+  systemMeters[key].style.width = `${clamp(width, 5, 100)}%`;
+  systemMeters[key].classList.toggle("positive", score > 0);
+  systemMeters[key].classList.toggle("negative", score < 0);
+}
+
+function updateExplorer() {
+  const active = activeFactorIds();
+  const totals = { patientIn: 0, capacity: 0, los: 0, patientOut: 0, satisfaction: 0 };
+  const relatedIds = new Set();
+  const summaries = [];
+
+  factorToggles.forEach((toggle) => {
+    const isActive = active.includes(toggle.dataset.factor);
+    toggle.classList.toggle("is-active", isActive);
+  });
+
+  active.forEach((factorId) => {
+    const effect = factorEffects[factorId];
+    if (!effect) return;
+    Object.entries(effect.scores).forEach(([key, value]) => {
+      totals[key] += value;
+    });
+    relatedIds.add(factorId);
+    effect.targets.forEach((target) => relatedIds.add(target));
+    summaries.push(`${effect.label} ${effect.summary}`);
+  });
+
+  Object.entries(totals).forEach(([key, value]) => updateMeter(key, value));
+
+  if (active.length > 0) {
+    renderDiagramHighlights(relatedIds);
+    scenarioTitle.textContent = `${active.length} factor${active.length === 1 ? "" : "s"} active`;
+    scenarioText.textContent = summaries.join("; ") + ".";
+  } else {
+    renderDiagramHighlights(new Set());
+    scenarioTitle.textContent = "No factors active";
+    scenarioText.textContent = "Turn on one or more factors to explore how they push or relieve the AMRPA rehab hospital system.";
+  }
+}
+
+factorToggles.forEach((toggle) => {
+  toggle.addEventListener("click", () => {
+    const isPressed = toggle.getAttribute("aria-pressed") === "true";
+    toggle.setAttribute("aria-pressed", String(!isPressed));
+    updateExplorer();
+  });
+});
+
+updateExplorer();

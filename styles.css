@@ -379,6 +379,127 @@ output {
   color: var(--muted);
 }
 
+.explorer-panel {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+
+.explorer-controls {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.6fr) minmax(0, 1.4fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.explorer-controls h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.explorer-controls p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
+.toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.factor-toggle {
+  min-height: 42px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfc;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+}
+
+.factor-toggle:hover,
+.factor-toggle:focus-visible {
+  border-color: rgba(20, 124, 114, 0.45);
+  outline: 3px solid rgba(20, 124, 114, 0.16);
+  outline-offset: 2px;
+}
+
+.factor-toggle[aria-pressed="true"] {
+  border-color: var(--teal);
+  background: #eef8f6;
+  color: var(--teal);
+}
+
+.system-meters {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.meter {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfc;
+}
+
+.meter span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.meter strong {
+  font-size: 1.1rem;
+}
+
+.meter-track {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e6ecef;
+}
+
+.meter-track i {
+  display: block;
+  width: 50%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--blue);
+  transition: width 180ms ease, background-color 180ms ease;
+}
+
+.meter-track i.negative {
+  background: var(--red);
+}
+
+.meter-track i.positive {
+  background: var(--teal);
+}
+
+.scenario-summary {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border-left: 4px solid var(--gold);
+  background: #fffdf7;
+}
+
+.scenario-summary p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
 .causal-loops {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -449,6 +570,8 @@ output {
   .summary,
   .workspace,
   .causal-loops,
+  .explorer-controls,
+  .system-meters,
   .data-list {
     grid-template-columns: 1fr;
   }
@@ -476,6 +599,10 @@ output {
   .vensim-diagram {
     min-width: 860px;
   }
+
+  .toggle-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 520px) {
@@ -486,5 +613,9 @@ output {
   .model-pill {
     width: max-content;
     max-width: 100%;
+  }
+
+  .toggle-grid {
+    grid-template-columns: 1fr;
   }
 }
