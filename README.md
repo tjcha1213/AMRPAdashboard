@@ -5,6 +5,7 @@ Static dashboard for the AMRPA rehab hospital operations management project.
 The project frames a generalist vs. specialist service delivery simulation around:
 
 - Stakeholder mapping
+- Patient-in to patient-out process mapping
 - Patient satisfaction and operational effectiveness KPIs
 - Scenario testing for rehab hospital staffing models
 - Recommendation "recipe" for higher-value care delivery
