@@ -16,6 +16,10 @@ The project frames a generalist vs. specialist service delivery simulation aroun
 - `styles.css` - visual styling
 - `script.js` - KPI and scenario interactions
 
+## Related repositories
+
+- CHAdashboard: https://github.com/tjcha1213/CHAdashboard
+
 ## GitHub Pages
 
 After pushing to GitHub, enable Pages from the repository settings and serve from the `main` branch root.
