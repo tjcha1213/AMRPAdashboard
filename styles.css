@@ -760,6 +760,105 @@ output {
   font-weight: 800;
 }
 
+.hfcu-section {
+  margin-top: 18px;
+}
+
+.repo-tag {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.repo-tag:hover,
+.repo-tag:focus-visible {
+  text-decoration: underline;
+}
+
+.hfcu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.hfcu-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfcfc;
+}
+
+.hfcu-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.hfcu-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.workstream-label {
+  width: max-content;
+  padding: 6px 9px;
+  border-radius: 999px;
+  color: var(--teal);
+  background: var(--soft-teal);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.workstream-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr) 22px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.workstream-flow span {
+  min-height: 54px;
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  border: 1px solid #c8d5db;
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.workstream-flow i {
+  position: relative;
+  height: 2px;
+  background: var(--blue);
+}
+
+.workstream-flow i::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid var(--blue);
+}
+
+.workstream-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
 @media (max-width: 820px) {
   .topbar,
   .summary,
@@ -768,6 +867,7 @@ output {
   .causal-loops,
   .explorer-controls,
   .system-meters,
+  .hfcu-grid,
   .data-list {
     grid-template-columns: 1fr;
   }

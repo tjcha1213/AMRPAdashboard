@@ -9,6 +9,7 @@ The project frames a generalist vs. specialist service delivery simulation aroun
 - Patient satisfaction and operational effectiveness KPIs
 - Scenario testing for rehab hospital staffing models
 - Recommendation "recipe" for higher-value care delivery
+- Companion HFCU reengineering split for a waiting status checker MVP and remote notarization site section
 
 ## Files
 

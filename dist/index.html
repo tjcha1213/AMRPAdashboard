@@ -365,6 +365,54 @@
         </div>
       </section>
 
+      <section class="panel hfcu-section" aria-label="HFCU reengineering workstreams">
+        <div class="section-heading">
+          <div>
+            <h2>HFCU Reengineering Split</h2>
+            <p>Companion process work for the HFCU site, separated into the app MVP and the web service section.</p>
+          </div>
+          <a class="flow-tag repo-tag" href="https://github.com/tjcha1213/HFCUreengineering" target="_blank" rel="noreferrer">HFCU repo</a>
+        </div>
+
+        <div class="hfcu-grid">
+          <article class="hfcu-card">
+            <span class="workstream-label">MVP app</span>
+            <h3>Waiting status checker</h3>
+            <p>Member-facing app concept for checking queue position, estimated wait time, request status, and next required action without calling the branch or service team.</p>
+            <div class="workstream-flow" aria-label="Waiting status checker flow">
+              <span>Request submitted</span>
+              <i></i>
+              <span>Status checked</span>
+              <i></i>
+              <span>Member updated</span>
+            </div>
+            <ul class="workstream-list">
+              <li>Inputs: member request ID, service type, appointment or document status.</li>
+              <li>Outputs: wait estimate, queue stage, required documents, service alert.</li>
+              <li>KPIs: call deflection, wait transparency, completion rate, member satisfaction.</li>
+            </ul>
+          </article>
+
+          <article class="hfcu-card">
+            <span class="workstream-label">HFCU site section</span>
+            <h3>Remote notarization</h3>
+            <p>Website section concept that routes members into remote notarization eligibility, document preparation, identity verification, live session scheduling, and completion confirmation.</p>
+            <div class="workstream-flow" aria-label="Remote notarization flow">
+              <span>Eligibility</span>
+              <i></i>
+              <span>ID verification</span>
+              <i></i>
+              <span>Notary session</span>
+            </div>
+            <ul class="workstream-list">
+              <li>Inputs: document type, state rules, ID readiness, appointment preference.</li>
+              <li>Outputs: checklist, scheduling path, upload slot, confirmation record.</li>
+              <li>KPIs: digital adoption, abandonment rate, cycle time, successful notarizations.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
       <section class="panel data-section">
         <h2>Data Sources / Databases Used</h2>
         <div class="data-list">
