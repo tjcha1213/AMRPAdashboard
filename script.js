@@ -480,3 +480,97 @@ factorToggles.forEach((toggle) => {
 });
 
 updateExplorer();
+
+const hfcuRequests = {
+  branch: {
+    id: "HFCU-2048",
+    label: "In service queue",
+    title: "Branch visit check-in",
+    eta: "18 min",
+    progress: 58,
+    stepTwo: "Identity confirmed",
+    stepThree: "Waiting for next specialist",
+    stepFour: "Service completed",
+    nextAction: "Stay nearby. You will receive a text when the service desk is ready."
+  },
+  loan: {
+    id: "HFCU-3316",
+    label: "Under review",
+    title: "Personal loan review",
+    eta: "1 day",
+    progress: 72,
+    stepTwo: "Documents matched",
+    stepThree: "Credit team reviewing",
+    stepFour: "Decision sent",
+    nextAction: "Upload the latest paystub to prevent a review delay."
+  },
+  notary: {
+    id: "HFCU-4407",
+    label: "Ready to schedule",
+    title: "Remote notarization",
+    eta: "Today",
+    progress: 84,
+    stepTwo: "ID verification passed",
+    stepThree: "Choose notary session",
+    stepFour: "Stamped document returned",
+    nextAction: "Select a live notary slot and upload the document before the session."
+  }
+};
+
+const hfcuRequestInput = document.querySelector("#hfcuRequestId");
+const hfcuLookup = document.querySelector("#hfcuLookup");
+const hfcuSampleButtons = Array.from(document.querySelectorAll(".sample-request"));
+const hfcuStatusLabel = document.querySelector("#hfcuStatusLabel");
+const hfcuStatusTitle = document.querySelector("#hfcuStatusTitle");
+const hfcuEta = document.querySelector("#hfcuEta");
+const hfcuProgress = document.querySelector("#hfcuProgress");
+const hfcuStepTwo = document.querySelector("#hfcuStepTwo");
+const hfcuStepThree = document.querySelector("#hfcuStepThree");
+const hfcuStepFour = document.querySelector("#hfcuStepFour");
+const hfcuNextAction = document.querySelector("#hfcuNextAction");
+const hfcuNavItems = Array.from(document.querySelectorAll(".hfcu-nav-item"));
+const hfcuPanels = Array.from(document.querySelectorAll(".hfcu-tab-panel"));
+
+function renderHfcuRequest(type) {
+  const request = hfcuRequests[type] || hfcuRequests.branch;
+  if (!hfcuRequestInput || !hfcuStatusLabel) return;
+
+  hfcuRequestInput.value = request.id;
+  hfcuStatusLabel.textContent = request.label;
+  hfcuStatusTitle.textContent = request.title;
+  hfcuEta.textContent = request.eta;
+  hfcuProgress.style.width = `${request.progress}%`;
+  hfcuStepTwo.textContent = request.stepTwo;
+  hfcuStepThree.textContent = request.stepThree;
+  hfcuStepFour.textContent = request.stepFour;
+  hfcuNextAction.textContent = request.nextAction;
+
+  hfcuSampleButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.request === type);
+  });
+}
+
+hfcuSampleButtons.forEach((button) => {
+  button.addEventListener("click", () => renderHfcuRequest(button.dataset.request));
+});
+
+if (hfcuLookup) {
+  hfcuLookup.addEventListener("click", () => {
+    const value = (hfcuRequestInput.value || "").toLowerCase();
+    if (value.includes("3316") || value.includes("loan")) {
+      renderHfcuRequest("loan");
+    } else if (value.includes("4407") || value.includes("notary")) {
+      renderHfcuRequest("notary");
+    } else {
+      renderHfcuRequest("branch");
+    }
+  });
+}
+
+hfcuNavItems.forEach((item) => {
+  item.addEventListener("click", () => {
+    const tab = item.dataset.tab;
+    hfcuNavItems.forEach((navItem) => navItem.classList.toggle("is-active", navItem === item));
+    hfcuPanels.forEach((panel) => panel.classList.toggle("is-active", panel.dataset.panel === tab));
+  });
+});

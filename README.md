@@ -10,6 +10,7 @@ The project frames a generalist vs. specialist service delivery simulation aroun
 - Scenario testing for rehab hospital staffing models
 - Recommendation "recipe" for higher-value care delivery
 - Companion HFCU reengineering split for a waiting status checker MVP and remote notarization site section
+- Roomie MVP-inspired mobile prototype for the HFCU waiting status checker
 
 ## Files
 

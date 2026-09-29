@@ -411,6 +411,98 @@
             </ul>
           </article>
         </div>
+
+        <div class="hfcu-prototype" aria-label="HFCU waiting status checker MVP prototype">
+          <div class="prototype-brief">
+            <span class="workstream-label">Roomie MVP baseline</span>
+            <h3>Interactive HFCU MVP prototype</h3>
+            <p>The prototype borrows Roomie's mobile-first baseline: a compact app shell, bottom navigation, searchable records, live cards, and lightweight mock state changes.</p>
+            <div class="prototype-metrics">
+              <div><strong>31%</strong><span>target call deflection</span></div>
+              <div><strong>2.4 min</strong><span>status check cycle</span></div>
+              <div><strong>88</strong><span>member clarity score</span></div>
+            </div>
+          </div>
+
+          <div class="hfcu-phone" role="application" aria-label="HFCU member app prototype">
+            <div class="phone-top">
+              <span>9:41</span>
+              <span>HFCU</span>
+            </div>
+            <div class="hfcu-app-screen">
+              <div class="app-hero">
+                <span>Member services</span>
+                <h4>Waiting status checker</h4>
+                <p>Track branch, loan, card, and notarization requests in one place.</p>
+              </div>
+
+              <div class="status-search">
+                <label for="hfcuRequestId">Request ID</label>
+                <div>
+                  <input id="hfcuRequestId" type="text" value="HFCU-2048" aria-label="Request ID">
+                  <button id="hfcuLookup" type="button">Check</button>
+                </div>
+              </div>
+
+              <div class="sample-requests" aria-label="Sample HFCU requests">
+                <button class="sample-request is-active" type="button" data-request="branch">Branch visit</button>
+                <button class="sample-request" type="button" data-request="loan">Loan review</button>
+                <button class="sample-request" type="button" data-request="notary">Remote notary</button>
+              </div>
+
+              <div class="request-card">
+                <div>
+                  <span id="hfcuStatusLabel">In service queue</span>
+                  <strong id="hfcuStatusTitle">Branch visit check-in</strong>
+                </div>
+                <b id="hfcuEta">18 min</b>
+              </div>
+
+              <div class="status-progress" aria-label="Request progress">
+                <i id="hfcuProgress"></i>
+              </div>
+
+              <div class="status-timeline">
+                <div class="is-complete"><span></span><p>Request received</p></div>
+                <div class="is-complete"><span></span><p id="hfcuStepTwo">Identity confirmed</p></div>
+                <div class="is-current"><span></span><p id="hfcuStepThree">Waiting for next specialist</p></div>
+                <div><span></span><p id="hfcuStepFour">Service completed</p></div>
+              </div>
+
+              <div class="hfcu-tab-panel is-active" data-panel="status">
+                <strong>Next action</strong>
+                <p id="hfcuNextAction">Stay nearby. You will receive a text when the service desk is ready.</p>
+              </div>
+              <div class="hfcu-tab-panel" data-panel="docs">
+                <strong>Documents</strong>
+                <p>Government ID, member number, and the service form are ready. One optional income document is still missing.</p>
+              </div>
+              <div class="hfcu-tab-panel" data-panel="notary">
+                <strong>Remote notarization</strong>
+                <p>Eligibility, ID verification, notary scheduling, secure upload, and completion receipt can live in this section.</p>
+              </div>
+              <div class="hfcu-tab-panel" data-panel="support">
+                <strong>Support</strong>
+                <p>Escalate to live chat, request a callback, or send the member a branch handoff code.</p>
+              </div>
+            </div>
+
+            <nav class="hfcu-bottom-nav" aria-label="HFCU prototype navigation">
+              <button class="hfcu-nav-item is-active" type="button" data-tab="status">
+                <span>S</span>Status
+              </button>
+              <button class="hfcu-nav-item" type="button" data-tab="docs">
+                <span>D</span>Docs
+              </button>
+              <button class="hfcu-nav-item" type="button" data-tab="notary">
+                <span>N</span>Notary
+              </button>
+              <button class="hfcu-nav-item" type="button" data-tab="support">
+                <span>?</span>Support
+              </button>
+            </nav>
+          </div>
+        </div>
       </section>
 
       <section class="panel data-section">
