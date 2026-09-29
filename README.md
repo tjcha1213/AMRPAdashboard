@@ -19,6 +19,7 @@ The project frames a generalist vs. specialist service delivery simulation aroun
 ## Related repositories
 
 - CHAdashboard: https://github.com/tjcha1213/CHAdashboard
+- HFCUreengineering: https://github.com/tjcha1213/HFCUreengineering
 
 ## GitHub Pages
 
