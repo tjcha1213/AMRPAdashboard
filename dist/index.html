@@ -102,6 +102,7 @@
             <p id="tradeoffNarrative">Adjust the sliders or toggle factors in the system diagram to explore the profit-experience tradeoff.</p>
           </div>
         </div>
+
       </section>
 
       <section class="workspace">
@@ -499,6 +500,96 @@
               </button>
               <button class="hfcu-nav-item" type="button" data-tab="support">
                 <span>?</span>Support
+              </button>
+            </nav>
+          </div>
+        </div>
+
+        <div class="hfcu-prototype hfcu-prototype-alt" aria-label="HFCU remote notarization app prototype">
+          <div class="prototype-brief">
+            <span class="workstream-label">HFCU app module</span>
+            <h3>Remote notarization prototype</h3>
+            <p>This companion prototype shows the notarization section as a self-service path inside the HFCU app, from eligibility through signed document delivery.</p>
+            <div class="prototype-metrics">
+              <div><strong>64%</strong><span>target digital completion</span></div>
+              <div><strong>12 min</strong><span>member prep time</span></div>
+              <div><strong>92%</strong><span>ready before session</span></div>
+            </div>
+          </div>
+
+          <div class="hfcu-phone notary-phone" role="application" aria-label="HFCU remote notarization app prototype">
+            <div class="phone-top">
+              <span>9:41</span>
+              <span>HFCU Notary</span>
+            </div>
+            <div class="hfcu-app-screen">
+              <div class="app-hero notary-hero">
+                <span>Remote notarization</span>
+                <h4>Prepare, verify, meet</h4>
+                <p>Confirm eligibility, upload the document, and join a secure notary session.</p>
+              </div>
+
+              <div class="notary-type-grid" aria-label="Document type selector">
+                <button class="notary-type is-active" type="button" data-notary-type="affidavit">Affidavit</button>
+                <button class="notary-type" type="button" data-notary-type="loan">Loan doc</button>
+                <button class="notary-type" type="button" data-notary-type="poa">Power of attorney</button>
+              </div>
+
+              <div class="request-card notary-card">
+                <div>
+                  <span id="notaryEligibility">Eligible in your state</span>
+                  <strong id="notaryTitle">Affidavit notarization</strong>
+                </div>
+                <b id="notaryEta">Today</b>
+              </div>
+
+              <div class="status-progress" aria-label="Remote notarization progress">
+                <i id="notaryProgress"></i>
+              </div>
+
+              <div class="notary-checklist" aria-label="Remote notarization checklist">
+                <button class="notary-check is-complete" type="button" data-step="id"><span>ID</span><p>Government ID verified</p></button>
+                <button class="notary-check is-complete" type="button" data-step="upload"><span>UP</span><p id="notaryUploadText">Affidavit uploaded</p></button>
+                <button class="notary-check is-current" type="button" data-step="session"><span>LIVE</span><p id="notarySessionText">Choose a live notary slot</p></button>
+                <button class="notary-check" type="button" data-step="receipt"><span>DONE</span><p>Receive notarized copy</p></button>
+              </div>
+
+              <div class="slot-grid" aria-label="Available notary appointment times">
+                <button class="notary-slot is-active" type="button" data-slot="10:30 AM">10:30 AM</button>
+                <button class="notary-slot" type="button" data-slot="1:15 PM">1:15 PM</button>
+                <button class="notary-slot" type="button" data-slot="4:45 PM">4:45 PM</button>
+              </div>
+
+              <div class="hfcu-tab-panel is-active" data-panel="overview">
+                <strong>Member view</strong>
+                <p id="notaryPanelText">Your affidavit is eligible for remote notarization. Bring your government ID and join from a quiet, well-lit place.</p>
+              </div>
+              <div class="hfcu-tab-panel" data-panel="verify">
+                <strong>Verify</strong>
+                <p>ID check, knowledge-based authentication, camera readiness, and signer consent are grouped before the live session.</p>
+              </div>
+              <div class="hfcu-tab-panel" data-panel="session">
+                <strong>Session</strong>
+                <p>The app shows the selected time, notary join button, waiting room status, and escalation path if the member is late.</p>
+              </div>
+              <div class="hfcu-tab-panel" data-panel="receipt">
+                <strong>Receipt</strong>
+                <p>After completion, the member can download the notarized file, view audit details, and send a copy to HFCU staff.</p>
+              </div>
+            </div>
+
+            <nav class="hfcu-bottom-nav" aria-label="Remote notarization prototype navigation">
+              <button class="hfcu-nav-item is-active" type="button" data-tab="overview">
+                <span>O</span>Overview
+              </button>
+              <button class="hfcu-nav-item" type="button" data-tab="verify">
+                <span>V</span>Verify
+              </button>
+              <button class="hfcu-nav-item" type="button" data-tab="session">
+                <span>S</span>Session
+              </button>
+              <button class="hfcu-nav-item" type="button" data-tab="receipt">
+                <span>R</span>Receipt
               </button>
             </nav>
           </div>

@@ -529,7 +529,6 @@ const hfcuStepThree = document.querySelector("#hfcuStepThree");
 const hfcuStepFour = document.querySelector("#hfcuStepFour");
 const hfcuNextAction = document.querySelector("#hfcuNextAction");
 const hfcuNavItems = Array.from(document.querySelectorAll(".hfcu-nav-item"));
-const hfcuPanels = Array.from(document.querySelectorAll(".hfcu-tab-panel"));
 
 function renderHfcuRequest(type) {
   const request = hfcuRequests[type] || hfcuRequests.branch;
@@ -570,7 +569,91 @@ if (hfcuLookup) {
 hfcuNavItems.forEach((item) => {
   item.addEventListener("click", () => {
     const tab = item.dataset.tab;
-    hfcuNavItems.forEach((navItem) => navItem.classList.toggle("is-active", navItem === item));
-    hfcuPanels.forEach((panel) => panel.classList.toggle("is-active", panel.dataset.panel === tab));
+    const phone = item.closest(".hfcu-phone");
+    const scopedNavItems = Array.from(phone.querySelectorAll(".hfcu-nav-item"));
+    const scopedPanels = Array.from(phone.querySelectorAll(".hfcu-tab-panel"));
+    scopedNavItems.forEach((navItem) => navItem.classList.toggle("is-active", navItem === item));
+    scopedPanels.forEach((panel) => panel.classList.toggle("is-active", panel.dataset.panel === tab));
+  });
+});
+
+const notaryFlows = {
+  affidavit: {
+    title: "Affidavit notarization",
+    eligibility: "Eligible in your state",
+    eta: "Today",
+    progress: 76,
+    upload: "Affidavit uploaded",
+    session: "Choose a live notary slot",
+    panel: "Your affidavit is eligible for remote notarization. Bring your government ID and join from a quiet, well-lit place."
+  },
+  loan: {
+    title: "Loan document notarization",
+    eligibility: "HFCU review required",
+    eta: "1 day",
+    progress: 62,
+    upload: "Loan packet uploaded",
+    session: "Waiting on document review",
+    panel: "The loan packet can be notarized after HFCU confirms the signer, document version, and required witnesses."
+  },
+  poa: {
+    title: "Power of attorney",
+    eligibility: "Witness check needed",
+    eta: "2 days",
+    progress: 48,
+    upload: "POA draft uploaded",
+    session: "Confirm witness requirements",
+    panel: "Power of attorney requests need extra readiness checks before a remote session can be scheduled."
+  }
+};
+
+const notaryTypeButtons = Array.from(document.querySelectorAll(".notary-type"));
+const notarySlotButtons = Array.from(document.querySelectorAll(".notary-slot"));
+const notaryCheckButtons = Array.from(document.querySelectorAll(".notary-check"));
+const notaryEligibility = document.querySelector("#notaryEligibility");
+const notaryTitle = document.querySelector("#notaryTitle");
+const notaryEta = document.querySelector("#notaryEta");
+const notaryProgress = document.querySelector("#notaryProgress");
+const notaryUploadText = document.querySelector("#notaryUploadText");
+const notarySessionText = document.querySelector("#notarySessionText");
+const notaryPanelText = document.querySelector("#notaryPanelText");
+
+function renderNotaryFlow(type) {
+  const flow = notaryFlows[type] || notaryFlows.affidavit;
+  if (!notaryTitle) return;
+
+  notaryEligibility.textContent = flow.eligibility;
+  notaryTitle.textContent = flow.title;
+  notaryEta.textContent = flow.eta;
+  notaryProgress.style.width = `${flow.progress}%`;
+  notaryUploadText.textContent = flow.upload;
+  notarySessionText.textContent = flow.session;
+  notaryPanelText.textContent = flow.panel;
+
+  notaryTypeButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.notaryType === type);
+  });
+}
+
+notaryTypeButtons.forEach((button) => {
+  button.addEventListener("click", () => renderNotaryFlow(button.dataset.notaryType));
+});
+
+notarySlotButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    notarySlotButtons.forEach((slot) => slot.classList.toggle("is-active", slot === button));
+    if (notarySessionText) {
+      notarySessionText.textContent = `Session held for ${button.dataset.slot}`;
+    }
+    if (notaryProgress) {
+      notaryProgress.style.width = "88%";
+    }
+  });
+});
+
+notaryCheckButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    notaryCheckButtons.forEach((check) => check.classList.remove("is-current"));
+    button.classList.add("is-complete", "is-current");
   });
 });

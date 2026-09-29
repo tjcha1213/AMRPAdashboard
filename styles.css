@@ -869,6 +869,19 @@ output {
   border-top: 1px solid var(--line);
 }
 
+.hfcu-prototype-alt {
+  grid-template-columns: minmax(300px, 390px) minmax(260px, 0.78fr);
+}
+
+.hfcu-prototype-alt .prototype-brief {
+  order: 2;
+}
+
+.hfcu-prototype-alt .hfcu-phone {
+  order: 1;
+  justify-self: start;
+}
+
 .prototype-brief {
   display: grid;
   gap: 14px;
@@ -951,6 +964,10 @@ output {
   border-radius: 18px;
   color: var(--white);
   background: linear-gradient(135deg, #174c78, #147c72);
+}
+
+.notary-hero {
+  background: linear-gradient(135deg, #315f91, #bc8b2d);
 }
 
 .app-hero span {
@@ -1036,6 +1053,34 @@ output {
   background: var(--soft-teal);
 }
 
+.notary-type-grid,
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.notary-type,
+.notary-slot {
+  min-height: 42px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  background: var(--white);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.notary-type.is-active,
+.notary-slot.is-active {
+  color: var(--blue);
+  border-color: rgba(49, 95, 145, 0.36);
+  background: var(--soft-blue);
+}
+
 .request-card {
   display: flex;
   justify-content: space-between;
@@ -1070,6 +1115,11 @@ output {
   color: var(--blue);
   background: var(--soft-blue);
   font-size: 0.86rem;
+}
+
+.notary-card b {
+  color: var(--gold);
+  background: var(--soft-gold);
 }
 
 .status-progress {
@@ -1125,6 +1175,63 @@ output {
 }
 
 .status-timeline .is-current p {
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.notary-checklist {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--white);
+}
+
+.notary-check {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: var(--ink);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.notary-check span {
+  display: grid;
+  place-items: center;
+  min-height: 34px;
+  border-radius: 10px;
+  color: var(--muted);
+  background: #edf2f4;
+  font-size: 0.66rem;
+  font-weight: 900;
+}
+
+.notary-check p {
+  margin-bottom: 0;
+  color: var(--muted);
+  line-height: 1.25;
+}
+
+.notary-check.is-complete span,
+.notary-check.is-current span {
+  color: var(--white);
+  background: var(--teal);
+}
+
+.notary-check.is-current {
+  border-color: rgba(188, 139, 45, 0.34);
+  background: var(--soft-gold);
+}
+
+.notary-check.is-current p {
   color: var(--ink);
   font-weight: 800;
 }
@@ -1203,6 +1310,11 @@ output {
     justify-self: center;
   }
 
+  .hfcu-prototype-alt .prototype-brief,
+  .hfcu-prototype-alt .hfcu-phone {
+    order: initial;
+  }
+
   .topbar {
     display: grid;
   }
@@ -1248,6 +1360,8 @@ output {
 
   .prototype-metrics,
   .sample-requests,
+  .notary-type-grid,
+  .slot-grid,
   .workstream-flow {
     grid-template-columns: 1fr;
   }

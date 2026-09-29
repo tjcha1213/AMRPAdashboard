@@ -11,6 +11,7 @@ The project frames a generalist vs. specialist service delivery simulation aroun
 - Recommendation "recipe" for higher-value care delivery
 - Companion HFCU reengineering split for a waiting status checker MVP and remote notarization site section
 - Roomie MVP-inspired mobile prototype for the HFCU waiting status checker
+- HFCU app-style remote notarization prototype for eligibility, verification, session scheduling, and receipt flow
 
 ## Files
 
